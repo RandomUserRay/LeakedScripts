@@ -1127,14 +1127,14 @@ function load()
         --// Hitsounds
         Hitsounds = {
             ["ginos bubbles.wav"] = "https://raw.githubusercontent.com/linemaster2/hitsounds/main/hitsound(3).wav",
-            ["bell.wav"] = "https://github.com/nyulachan/nyula/blob/main/Sounds/bell.wav?raw=true",
-            ["bepis.wav"] = "https://github.com/nyulachan/nyula/blob/main/Sounds/bepis.wav?raw=true",
-            ["bubble.wav"] = "https://github.com/nyulachan/nyula/blob/main/Sounds/bubble.wav?raw=true",
-            ["cock.wav"] = "https://github.com/nyulachan/nyula/blob/main/Sounds/cock.wav?raw=true",
-            ["cod.wav"] = "https://github.com/nyulachan/nyula/blob/main/Sounds/cod.wav?raw=true",
-            ["fatality.wav"] = "https://github.com/nyulachan/nyula/blob/main/Sounds/fatality.wav?raw=true",
-            ["phonk.wav"] = "https://github.com/nyulachan/nyula/blob/main/Sounds/phonk.wav?raw=true",
-            ["sparkle.wav"] = "https://github.com/nyulachan/nyula/blob/main/Sounds/sparkle.wav?raw=true",
+            ["bell.mp3"] = "https://github.com/RandomUserRay/LeakedAzure/blob/main/HitSound/bell.mp3?raw=true",
+            ["bepis.mp3"] = "https://github.com/RandomUserRay/LeakedAzure/blob/main/HitSound/bepis.mp3?raw=true",
+            ["bubble.mp3"] = "https://github.com/RandomUserRay/LeakedAzure/blob/main/HitSound/bubble.mp3?raw=true",
+            ["cock.mp3"] = "https://github.com/RandomUserRay/LeakedAzure/blob/main/HitSound/cock.mp3?raw=true",
+            ["cod.mp3"] = "https://github.com/RandomUserRay/LeakedAzure/blob/main/HitSound/cod.mp3?raw=true",
+            ["fatality.mp3"] = "https://github.com/RandomUserRay/LeakedAzure/blob/main/HitSound/fatality.mp3?raw=true",
+            ["phonk.mp3"] = "https://github.com/RandomUserRay/LeakedAzure/blob/main/HitSound/phonk.mp3?raw=true",
+            ["sparkle.mp3"] = "https://github.com/RandomUserRay/LeakedAzure/blob/main/HitSound/sparkle.mp3?raw=true",
             ["rust headshot.wav"] = "https://raw.githubusercontent.com/linemaster2/hitsounds/main/eaolwpzhgsba.wav"
         }
 
