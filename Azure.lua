@@ -5,11 +5,25 @@ if (not LPH_OBFUSCATED) then
 end
 
 function autoarmor()
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/RandomUserRay/DHSC/main/AutoArmor.lua"))()
+    if game:GetService("Players").LocalPlayer.Character.BodyEffects.Armor.Value < 50 then 
+        local Pos = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame
+        game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = game:GetService("Workspace").Ignored.Shop["[High-Medium Armor] - $2440"].Head.CFrame
+        wait(0.2)
+        fireclickdetector(game:GetService("Workspace").Ignored.Shop["[High-Medium Armor] - $2440"].ClickDetector)
+        game:GetService("RunService").RenderStepped:Wait()
+        game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = Pos 
+    end
 end
 
 function autofirearmor()
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/RandomUserRay/DHSC/main/AutoFireArmor.lua"))()
+    if game:GetService("Players").LocalPlayer.Character.BodyEffects.FireArmor.Value < 100 then 
+        local Pos = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame
+        game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = game:GetService("Workspace").Ignored.Shop["[Fire Armor] - $2493"].Head.CFrame
+        wait(0.2)
+        fireclickdetector(game:GetService("Workspace").Ignored.Shop["[Fire Armor] - $2493"].ClickDetector)
+        game:GetService("RunService").RenderStepped:Wait()
+        game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = Pos 
+    end
 end
 
 function loadrip()
