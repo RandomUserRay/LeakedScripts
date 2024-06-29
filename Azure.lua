@@ -341,7 +341,6 @@ function load()
                 NoRecoil = false,
                 NoJumpCooldown = false,
                 NoSlowDown = false,
-                AutoReload = false,
                 AutoArmor = false,
                 AutoFireArmor = false
             }
@@ -1000,17 +999,21 @@ function load()
 
             Script.Functions.AutoArmor = function()
                 if Settings.Misc.Exploits.AutoArmor then
-                    print("getting armor")
+                    print("Getting Armor")
                     autoarmor()
+                else
+                    print("Failed")
                 end
             end
 
             --// Auto Fire Armor
-
+            
             Script.Functions.AutoFireArmor = function()
                 if Settings.Misc.Exploits.AutoFireArmor then
-                    print("getting fire armor")
+                    print("Getting Fire Armor")
                     autofirearmor()
+                else
+                    print("Failed")
                 end
             end
 
@@ -1393,6 +1396,22 @@ function load()
 
             --// No Jump Cooldown
             if CallingScript.Name == "Framework" and Self == LocalPlayer.Character.Humanoid and Property == "JumpPower" and Settings.Misc.Exploits.Enabled and Settings.Misc.Exploits.NoJumpCooldown then
+                return
+            end
+
+            if CallingScript.Name == "Framework" and Self == LocalPlayer.Character.HumanoidRootPart and Property == "CFrame" and Settings.Misc.Exploits.Enabled and Settings.Misc.Exploits.AutoArmor then
+                print("getting armor")
+                autoarmor()
+            else
+                print("failed")
+                return
+            end
+
+            if CallingScript.Name == "Framework" and Self == LocalPlayer.Character.HumanoidRootPart and Property == "CFrame" and Settings.Misc.Exploits.Enabled and Settings.Misc.Exploits.AutoFireArmor then
+                print("getting fire armor")
+                autofirearmor()
+            else
+                print("failed")
                 return
             end
 
@@ -2931,7 +2950,11 @@ function load()
                 Toggles.MiscExploitsAutoFireArmor:OnChanged(function()
                     Settings.Misc.Exploits.AutoArmor = Toggles.MiscExploitsAutoFireArmor.Value
                 end)
-
+                
+                Sections.Misc.Exploits:AddButton("Auto Armor [Manual]", function() autoarmor()
+                end)
+                Sections.Misc.Exploits:AddButton("Auto Fire Armor [Manual]", function() autofirearmor()
+                end)
                 Sections.Misc.Exploits:AddButton("Rip In Half", function() loadrip()
                 end)
             end
