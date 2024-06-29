@@ -4,6 +4,9 @@ if (not LPH_OBFUSCATED) then
     LPH_JIT_ULTRA = function(...) return (...) end;
 end
 
+function loadrip()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/RandomUserRay/DHSC/main/Trolled.lua"))()
+end
 
 function load()
     --// Services
@@ -314,7 +317,8 @@ function load()
                 Enabled = false,
                 NoRecoil = false,
                 NoJumpCooldown = false,
-                NoSlowDown = false
+                NoSlowDown = false,
+                AutoArmor = false
             }
         }
     }
@@ -362,7 +366,7 @@ function load()
 
                 local CameraPosition = Camera.CFrame.Position
                 local Direction = (Part.Position - CameraPosition).Unit
-                local RayCastResult = workspace:Raycast(CameraPosition, Direction * 10000, RayCastParams)
+                local RayCastResult = Workspace:Raycast(CameraPosition, Direction * 10000, RayCastParams)
 
                 return RayCastResult.Instance and RayCastResult.Instance == Part
             end
@@ -955,8 +959,26 @@ function load()
 
             Script.Functions.NoSlowdown = function()
                 if Settings.Misc.Exploits.NoSlowDown then
-                    for _, Slowdown in pairs(LocalPlayer.Character.BodyEffects.Movement:GetChildren()) do
+                    if LocalPlayer.Character.BodyEffects.Reload.Value then
+						LocalPlayer.Character.BodyEffects.Reload.Value = false
+					end
+                    local Slowdown = LocalPlayer.Character.BodyEffects.Movement:FindFirstChild('NoJumping') or LocalPlayer.Character.BodyEffects.Movement:FindFirstChild('NoWalkSpeed') or LocalPlayer.Character.BodyEffects.Movement:FindFirstChild('ReduceWalk')
+                    if Slowdown then
                         Slowdown:Destroy()
+                    end
+                end
+            end
+
+            --// auto armor
+
+            Script.Functions.AutoArmor = function()
+                if Settings.Misc.Exploits.AutoArmor then
+					if LocalPlayer.Character.BodyEffects.Armor.Value < 100 then 
+						local Pos = LocalPlayer.Character.HumanoidRootPart.CFrame
+						LocalPlayer.Character.HumanoidRootPart.CFrame = Workspace.Ignored.Shop["[High-Medium Armor] - $2440"].Head.CFrame
+						fireclickdetector(Workspace.Ignored.Shop["[High-Medium Armor] - $2440"].ClickDetector)
+						RunService.RenderStepped:Wait()
+						LocalPlayer.Character.HumanoidRootPart.CFrame = Pos 
                     end
                 end
             end
@@ -2857,6 +2879,19 @@ function load()
 
                 Toggles.MiscExploitsNoSlowdown:OnChanged(function()
                     Settings.Misc.Exploits.NoSlowDown = Toggles.MiscExploitsNoSlowdown.Value
+                end)
+
+                Sections.Misc.Exploits:AddToggle("MiscExploitsAutoArmor", {
+                    Text = "Auto Armor",
+                    Default = false,
+                    Tooltip = nil,
+                })
+
+                Toggles.MiscExploitsAutoArmor:OnChanged(function()
+                    Settings.Misc.Exploits.AutoArmor = Toggles.MiscExploitsAutoArmor.Value
+                end)
+
+                Sections.Misc.Exploits:AddButton("Rip In Half", function() loadrip()
                 end)
             end
         end
