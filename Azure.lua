@@ -33,12 +33,14 @@ function autofirearmor()
 end
 
 function loadrip()
-    local LocalPlayer = game.Players.LocalPlayer
+    local Workspace = game:GetService("Workspace")
+    local Players = game:GetService("Players")
+    local LocalPlayer = Players.LocalPlayer
     local Character = LocalPlayer.Character
     
     local IM = game:GetService("ReplicatedStorage").IM.ANIM
     
-    local PlayersChar = workspace.Players
+    local PlayersChar = Workspace.Players
     
     if _G.JOINTWATCHER then
         _G.JOINTWATCHER:Disconnect()
