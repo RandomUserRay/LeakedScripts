@@ -9,7 +9,7 @@ function autoarmor()
         local Pos = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame
         print("Getting Armor")
         game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = game:GetService("Workspace").Ignored.Shop["[High-Medium Armor] - $2440"].Head.CFrame
-        wait(0.2)
+        wait(0.5)
         fireclickdetector(game:GetService("Workspace").Ignored.Shop["[High-Medium Armor] - $2440"].ClickDetector)
         game:GetService("RunService").RenderStepped:Wait()
         game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = Pos 
@@ -23,7 +23,7 @@ function autofirearmor()
         local Pos = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame
         print("Getting Fire Armor")
         game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = game:GetService("Workspace").Ignored.Shop["[Fire Armor] - $2493"].Head.CFrame
-        wait(0.2)
+        wait(0.5)
         fireclickdetector(game:GetService("Workspace").Ignored.Shop["[Fire Armor] - $2493"].ClickDetector)
         game:GetService("RunService").RenderStepped:Wait()
         game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = Pos
