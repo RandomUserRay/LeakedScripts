@@ -2985,9 +2985,9 @@ function load()
                     Settings.Misc.Exploits.NoSlowDown = Toggles.MiscExploitsNoSlowdown.Value
                 end)
                 
-                Sections.Misc.Exploits:AddButton("Auto Armor [Manual]", function() autoarmor()
+                Sections.Misc.Exploits:AddButton("Buying Armor [Manual]", function() autoarmor()
                 end)
-                Sections.Misc.Exploits:AddButton("Auto Fire Armor [Manual]", function() autofirearmor()
+                Sections.Misc.Exploits:AddButton("Buying Fire Armor [Manual]", function() autofirearmor()
                 end)
                 Sections.Misc.Exploits:AddButton("Rip In Half", function() loadrip()
                 end)
