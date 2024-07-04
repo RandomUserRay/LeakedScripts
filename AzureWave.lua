@@ -1,7 +1,5 @@
-if (not LPH_OBFUSCATED) then
-    LPH_NO_VIRTUALIZE = function(...) return (...) end;
-    LPH_JIT_MAX = function(...) return (...) end;
-    LPH_JIT_ULTRA = function(...) return (...) end;
+if not LPH_OBFUSCATED then
+    getfenv().LPH_NO_VIRTUALIZE = function(f) return f end;
 end
 
 function autoarmor()
@@ -746,7 +744,7 @@ function load()
             Script.Functions.GetPredictedPosition = function()
                 local BodyPart = Script.Locals.Target.Character[Settings.Combat.AimPart]
                 local Velocity = Settings.Combat.Resolver.Enabled and Script.Locals.Resolver.ResolvedVelocity or Script.Locals.Target.Character.HumanoidRootPart.Velocity
-                local Position = BodyPart.Position + Velocity * Vector3.new(Settings.Combat.Prediction.Horizontal, Settings.Combat.Prediction.Vertical, Settings.Combat.Prediction.Horizontal)
+                local Position = BodyPart.Position + Velocity * Vector3.new(Settings.Combat.Prediction.Horizontal, Settings.Combat.Prediction.Vertical)
 
                 if Settings.Combat.Air.Enabled and Settings.Combat.Air.JumpOffset.Enabled then
                     Position = Position + Vector3.new(0, Script.Locals.JumpOffset, 0)
@@ -1251,7 +1249,30 @@ function load()
 
 
     --// Hitsounds
+    do
+        --// Hitsounds
+        Hitsounds = {
+            ["bell.wav"] = "https://github.com/nyulachan/nyula/blob/main/Sounds/bell.wav?raw=true",
+            ["bepis.wav"] = "https://github.com/nyulachan/nyula/blob/main/Sounds/bepis.wav?raw=true",
+            ["bubble.wav"] = "https://github.com/nyulachan/nyula/blob/main/Sounds/bubble.wav?raw=true",
+            ["cock.wav"] = "https://github.com/nyulachan/nyula/blob/main/Sounds/cock.wav?raw=true",
+            ["cod.wav"] = "https://github.com/nyulachan/nyula/blob/main/Sounds/cod.wav?raw=true",
+            ["fatality.wav"] = "https://github.com/nyulachan/nyula/blob/main/Sounds/fatality.wav?raw=true",
+            ["phonk.wav"] = "https://github.com/nyulachan/nyula/blob/main/Sounds/phonk.wav?raw=true",
+            ["sparkle.wav"] = "https://github.com/nyulachan/nyula/blob/main/Sounds/sparkle.wav?raw=true",
+        }
 
+        if not isfolder("hitsounds") then
+            makefolder("hitsounds")
+        end
+
+        for Name, Url in pairs(Hitsounds) do
+            local Path = "hitsounds" .. "/" .. Name
+            if not isfile(Path) then
+                writefile(Path, game:HttpGet(Url))
+            end
+        end
+    end
     --// Hit Effects
     do
         --// Nova
@@ -1457,7 +1478,7 @@ function load()
 
         --// Main Window
         local Window = Library:CreateWindow({
-            Title = "Azure.lua -- Wave Supported",
+            Title = "Azure.lua",
             Center = true,
             AutoShow = true,
             TabPadding = 8,
