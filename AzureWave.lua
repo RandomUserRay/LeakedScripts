@@ -165,34 +165,6 @@ function Play(ID)
     end
 end
 
-function autoarmor()
-    if game:GetService("Players").LocalPlayer.Character.BodyEffects.Armor.Value < 50 then 
-        local Pos = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame
-        print("Getting Armor")
-        game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = game:GetService("Workspace").Ignored.Shop["[High-Medium Armor] - $2440"].Head.CFrame
-        wait(5)
-        fireclickdetector(game:GetService("Workspace").Ignored.Shop["[High-Medium Armor] - $2440"].ClickDetector)
-        game:GetService("RunService").RenderStepped:Wait()
-        game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = Pos 
-    else
-        warn("U Already Have Armor")
-    end
-end
-
-function autofirearmor()
-    if game:GetService("Players").LocalPlayer.Character.BodyEffects.FireArmor.Value < 100 then 
-        local Pos = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame
-        print("Getting Fire Armor")
-        game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = game:GetService("Workspace").Ignored.Shop["[Fire Armor] - $2493"].Head.CFrame
-        wait(5)
-        fireclickdetector(game:GetService("Workspace").Ignored.Shop["[Fire Armor] - $2493"].ClickDetector)
-        game:GetService("RunService").RenderStepped:Wait()
-        game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = Pos
-    else
-        warn("U Already Have Fire Armor")
-    end
-end
-
 function loadneck()
     local Workspace = game:GetService("Workspace")
     local Players = game:GetService("Players")
@@ -519,7 +491,7 @@ function loadhold()
     KIckAnim.AnimationId = "rbxassetid://3355740058";
         tool = Instance.new("Tool")
         tool.RequiresHandle = false
-        tool.Name = "Hold"
+        tool.Name = "Activate"
         tool.Activated:Connect(function()
            Play(2848703459)
             game.ReplicatedStorage.MainEvent:FireServer("Grabbing",true)
@@ -528,6 +500,54 @@ function loadhold()
         tool.Parent = game.Players.LocalPlayer.Backpack
            
     game:GetService('Players').LocalPlayer.Character:WaitForChild('FULLY_LOADED_CHAR');
+end
+
+function loadppbat()
+local savepos = game.Players.LocalPlayer.Character.UpperTorso.Position
+             local Brokie = game.Workspace.Ignored.Shop["[Bat] - $265"]
+             game.Players.LocalPlayer.Character:MoveTo(Brokie.Head.Position)
+             wait(0.25)
+             fireclickdetector(Brokie.ClickDetector)
+             wait(0.25)
+         game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(savepos)
+         wait(.25)
+     local surg = game.Players.LocalPlayer.Backpack:FindFirstChild("[Bat]")
+      surg.Parent = game.Players.LocalPlayer.Character
+      local New = game.Players.LocalPlayer.Character:FindFirstChild("[Bat]")
+       New.Parent = game.Players.LocalPlayer.Backpack
+
+game.Players.LocalPlayer.Backpack:FindFirstChild("[Bat]").GripPos = Vector3.new(-1.5,-1,1.55)
+    game.Players.LocalPlayer.Backpack:FindFirstChild("[Bat]").GripForward = Vector3.new(0, 0, 0)
+    game.Players.LocalPlayer.Backpack:FindFirstChild("[Bat]").GripRight = Vector3.new(0.19607843458652496, 0.019607843831181526, 0.9803922176361084)
+
+game.Players.LocalPlayer.Backpack:FindFirstChild("[Bat]").GripUp = Vector3.new(-0.9755268096923828, -0.09755268692970276, 0.19705550372600555)
+
+game.Players.LocalPlayer.Backpack:FindFirstChild("[Bat]")
+    game.Players.LocalPlayer.Backpack:FindFirstChild("[Bat]")
+    game.Players.LocalPlayer.Backpack:FindFirstChild("[Bat]")
+    game.Players.LocalPlayer.Backpack:FindFirstChild("[Bat]")
+    game.Players.LocalPlayer.Backpack["[Bat]"].Parent = game.Players.LocalPlayer.Character
+end
+
+function loadppstopsign()
+local d = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
+    local k = game.Workspace.Ignored.Shop["[StopSign] - $318"]
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = k.Head.CFrame + Vector3.new(0, 3, 0)
+    if (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - k.Head.Position).Magnitude <= 50 then
+        wait(.2)
+        fireclickdetector(k:FindFirstChild("ClickDetector"), 4)
+        toolf = game.Players.LocalPlayer.Backpack:WaitForChild("[StopSign]")
+        toolf.Parent = game.Players.LocalPlayer.Character
+        end
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(d)
+wait()
+local Plr = game.Players.LocalPlayer
+local LastPos = Plr.Character.HumanoidRootPart.CFrame
+local pp = Plr.Character["[StopSign]"]
+wait(0.1)
+pp.Sign:Destroy()
+
+pp.Grip = CFrame.new(-1, 2, 1.45000005, 0, -0, -1, -0, 1, -0, 1, 0, -0)
 end
 
 function load()
@@ -841,6 +861,12 @@ function load()
                 NoRecoil = false,
                 NoJumpCooldown = false,
                 NoSlowDown = false,
+				AutoReload = false,
+				AutoArmor = false,
+				AutoFireArmor = false,
+				AntiStomp = false,
+				AntiBag = false,
+				AntiGrab = false,
             }
         }
     }
@@ -1476,7 +1502,86 @@ function load()
                     end
                 end
             end
+			
+			Script.Functions.AntiSTOMP = function()
+			    if Settings.Misc.Exploits.AntiStomp then
+				    if LocalPlayer.Character.Humanoid.Health < 10 then
+                        for __, v in pairs(LocalPlayer.Character:GetDescendants()) do
+                            if v:IsA("BasePart") then
+                                v:Destroy()
+                            end
+                        end
+                    end
+				end
+			end
+			
+			Script.Functions.AntiBAG = function()
+			    if Settings.Misc.Exploits.AntiBag then
+				    if LocalPlayer.Character:FindFirstChild("Christmas_Sock") then
+                        LocalPlayer.Character["Christmas_Sock"]:Destroy()
+                    end
+				end
+			end
+			
+			Script.Functions.AntiGRAB = function()
+			    if Settings.Misc.Exploits.AntiGrab then
+				    local grabbingConstraint = game.Players.LocalPlayer.Character:FindFirstChild("GRABBING_CONSTRAINT")
+                    if grabbingConstraint then
+                        game.Players.LocalPlayer.Character.Humanoid:ChangeState(15)
+                        wait()
+                        game.Players.LocalPlayer.Character.Humanoid:ChangeState(16)
+                        wait()
+                        game.Players.LocalPlayer.Character.Humanoid:ChangeState(0)
+                    end
+				end
+			end
+			
+			Script.Functions.AutoARMOR = function()
+			    if Settings.Misc.Exploits.AutoArmor then
+				    if LocalPlayer.Character.BodyEffects.Armor.Value < 20 then 
+						local Pos = LocalPlayer.Character.HumanoidRootPart.CFrame
+						LocalPlayer.Character.HumanoidRootPart.CFrame = Workspace.Ignored.Shop["[High-Medium Armor] - $2440"].Head.CFrame
+						fireclickdetector(Workspace.Ignored.Shop["[High-Medium Armor] - $2440"].ClickDetector, 0)
+						RunService.RenderStepped:Wait()
+						LocalPlayer.Character.HumanoidRootPart.CFrame = Pos
+					end
+				end
+			end
+		
+		    Script.Functions.AutoFIREARMOR = function()
+			    if Settings.Misc.Exploits.AutoFireArmor then
+				    if LocalPlayer.Character.BodyEffects.FireArmor.Value < 30 then 
+						local Pos = LocalPlayer.Character.HumanoidRootPart.CFrame
+						LocalPlayer.Character.HumanoidRootPart.CFrame = Workspace.Ignored.Shop["[Fire Armor] - $2493"].Head.CFrame
+						fireclickdetector(Workspace.Ignored.Shop["[Fire Armor] - $2493"].ClickDetector, 0)
+						RunService.RenderStepped:Wait()
+						LocalPlayer.Character.HumanoidRootPart.CFrame = Pos
+					end
+				end
+			end
 
+            Script.Functions.AutoRELOAD = function()
+                if Settings.Misc.Exploits.AutoReload then
+                    if LocalPlayer.Character:FindFirstChildWhichIsA("Tool") ~= nil then
+            if
+                LocalPlayer.Character:FindFirstChildWhichIsA("Tool"):FindFirstChild(
+                    "Ammo"
+                )
+             then
+                if
+                    LocalPlayer.Character:FindFirstChildWhichIsA("Tool"):FindFirstChild(
+                        "Ammo"
+                    ).Value <= 0
+                 then
+                    ReplicatedStorage.MainEvent:FireServer(
+                        "Reload",
+                        LocalPlayer.Character:FindFirstChildWhichIsA("Tool")
+                    )
+                end
+            end
+        end
+			    end
+			end
 
             --// Invisible Desync
 
@@ -1487,7 +1592,6 @@ function load()
 					end
                     local Slowdown = LocalPlayer.Character.BodyEffects.Movement:FindFirstChild('NoJumping') or LocalPlayer.Character.BodyEffects.Movement:FindFirstChild('NoWalkSpeed') or LocalPlayer.Character.BodyEffects.Movement:FindFirstChild('ReduceWalk')
                     if Slowdown then
-                        print("succesfully destroy slowdown")
                         Slowdown:Destroy()
                     end
                 end
@@ -1815,6 +1919,23 @@ function load()
                 Script.Functions.NoSlowdown()
             end)
         end
+		
+		--// Exploits Connections
+		do 
+		    Script.Functions.Connection(RunService.RenderStepped, function()
+			    Script.Functions.AutoRELOAD()
+				
+				Script.Functions.AutoARMOR()
+				
+				Script.Functions.AutoFIREARMOR()
+				
+				Script.Functions.AntiSTOMP()
+				
+				Script.Functions.AntiBAG()
+				
+				Script.Functions.AntiGRAB()
+			end)
+		end
     end
 
     --// Hooks
@@ -1871,7 +1992,7 @@ function load()
             if CallingScript.Name == "Framework" and Self == LocalPlayer.Character.Humanoid and Property == "JumpPower" and Settings.Misc.Exploits.Enabled and Settings.Misc.Exploits.NoJumpCooldown then
                 return
             end
-
+			
             return __newindex(Self, Property, Value)
         end))
     end
@@ -3357,27 +3478,37 @@ function load()
                 Toggles.MiscExploitsEnabled:OnChanged(function()
                     Settings.Misc.Exploits.Enabled = Toggles.MiscExploitsEnabled.Value
                 end)
-
-                Sections.Misc.Exploits:AddToggle("MiscExploitsNoRecoil", {
-                    Text = "No Recoil",
+				
+                Sections.Misc.Exploits:AddToggle("MiscExploitsAntiStomp", {
+                    Text = "Anti Stomp",
                     Default = false,
                     Tooltip = nil,
                 })
 
-                Toggles.MiscExploitsNoRecoil:OnChanged(function()
-                    Settings.Misc.Exploits.NoRecoil = Toggles.MiscExploitsNoRecoil.Value
+                Toggles.MiscExploitsAntiStomp:OnChanged(function()
+                    Settings.Misc.Exploits.AntiStomp = Toggles.MiscExploitsAntiStomp.Value
                 end)
-
-                Sections.Misc.Exploits:AddToggle("MiscExploitsNoJumpCooldown", {
-                    Text = "No Jumpcooldown",
+				
+                Sections.Misc.Exploits:AddToggle("MiscExploitsAntiBag", {
+                    Text = "Anti Bag",
                     Default = false,
                     Tooltip = nil,
                 })
 
-                Toggles.MiscExploitsNoJumpCooldown:OnChanged(function()
-                    Settings.Misc.Exploits.NoJumpCooldown = Toggles.MiscExploitsNoJumpCooldown.Value
+                Toggles.MiscExploitsAntiBag:OnChanged(function()
+                    Settings.Misc.Exploits.AntiBag = Toggles.MiscExploitsAntiBag.Value
                 end)
+				
+                Sections.Misc.Exploits:AddToggle("MiscExploitsAntiGrab", {
+                    Text = "Anti Grab",
+                    Default = false,
+                    Tooltip = nil,
+                })
 
+                Toggles.MiscExploitsAntiGrab:OnChanged(function()
+                    Settings.Misc.Exploits.AntiGrab = Toggles.MiscExploitsAntiGrab.Value
+                end)
+				
                 Sections.Misc.Exploits:AddToggle("MiscExploitsNoSlowdown", {
                     Text = "No Slowdown",
                     Default = false,
@@ -3387,11 +3518,37 @@ function load()
                 Toggles.MiscExploitsNoSlowdown:OnChanged(function()
                     Settings.Misc.Exploits.NoSlowDown = Toggles.MiscExploitsNoSlowdown.Value
                 end)
-                
-                Sections.Misc.Exploits:AddButton("Buying Armor [Manual]", function() autoarmor()
+				
+                Sections.Misc.Exploits:AddToggle("MiscExploitsAutoReload", {
+                    Text = "Auto Reload",
+                    Default = false,
+                    Tooltip = nil,
+                })
+
+                Toggles.MiscExploitsAutoReload:OnChanged(function()
+                    Settings.Misc.Exploits.AutoReload = Toggles.MiscExploitsAutoReload.Value
                 end)
-                Sections.Misc.Exploits:AddButton("Buying Fire Armor [Manual]", function() autofirearmor()
-				end)
+				
+                Sections.Misc.Exploits:AddToggle("MiscExploitsAutoArmor", {
+                    Text = "Auto Armor",
+                    Default = false,
+                    Tooltip = nil,
+                })
+
+                Toggles.MiscExploitsAutoArmor:OnChanged(function()
+                    Settings.Misc.Exploits.AutoArmor = Toggles.MiscExploitsAutoArmor.Value
+                end)
+                
+                Sections.Misc.Exploits:AddToggle("MiscExploitsAutoFireArmor", {
+                    Text = "Auto Fire Armor",
+                    Default = false,
+                    Tooltip = nil,
+                })
+
+                Toggles.MiscExploitsAutoFireArmor:OnChanged(function()
+                    Settings.Misc.Exploits.AutoFireArmor = Toggles.MiscExploitsAutoFireArmor.Value
+                end)
+				
 				Sections.Misc.Exploits:AddButton("Destroy EXP", function() loaddestroyexp()
 				end)
                 Sections.Misc.Exploits:AddButton("Neck Grab", function() loadneck()
@@ -3409,6 +3566,10 @@ function load()
 				Sections.Misc.Exploits:AddButton("Break Limbs", function() loadbreaklimbs()
 				end)
 				Sections.Misc.Exploits:AddButton("TP Tool", function() loadtp()
+				end)
+				Sections.Misc.Exploits:AddButton("PP Bat", function() loadppbat()
+				end)
+				Sections.Misc.Exploits:AddButton("PP StopSign", function() loadppstopsign()
 				end)
             end
         end
