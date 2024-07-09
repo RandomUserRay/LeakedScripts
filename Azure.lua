@@ -1,5 +1,7 @@
-if not LPH_OBFUSCATED then
-    getfenv().LPH_NO_VIRTUALIZE = function(f) return f end;
+if (not LPH_OBFUSCATED) then
+    LPH_NO_VIRTUALIZE = function(...) return (...) end;
+    LPH_JIT_MAX = function(...) return (...) end;
+    LPH_JIT_ULTRA = function(...) return (...) end;
 end
 
 function notify(title, text, icon, duration)
@@ -1510,7 +1512,7 @@ function load()
 
     do
         --// UI
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/RandomUserRay/UnknownScript/main/AzureUiLib.lua"))()
+        local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/RandomUserRay/UnknownScript/main/AzureUiLib.lua"))()
         local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/violin-suzutsuki/LinoriaLib/main/addons/SaveManager.lua"))()
         local ThemeManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/caIIed/Linoria-Rewrite/main/Theme%20Manager.lua"))()
 
@@ -1561,8 +1563,8 @@ function load()
             Misc = {
                 Speed = Tabs.Misc:AddLeftGroupbox("CFrame Speed"),
                 Exploits = Tabs.Misc:AddRightGroupbox("Exploits"),
-				Experimental = Tabs.Misc:AddLeftGroupbox("Experimental")
-				Animation = Tabs.Misc:AddRightGroupbox("Animations")
+				Experimental = Tabs.Misc:AddLeftGroupbox("Experimental"),
+				Animations = Tabs.Misc:AddRightGroupbox("Animations")
             },
 			TeleportMap = {
 			    Teleport = Tabs.TeleportMap:AddLeftGroupbox("Map Teleport")
