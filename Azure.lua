@@ -11,119 +11,6 @@ function notify(title, text, icon, duration)
     })
 end
 
-function loadtp()
-mouse = game.Players.LocalPlayer:GetMouse()
-tool = Instance.new("Tool")
-tool.RequiresHandle = false
-tool.Name = "Teleport"
-tool.Activated:connect(function()
-local pos = mouse.Hit+Vector3.new(0,2.5,0)
-pos = CFrame.new(pos.X,pos.Y,pos.Z)
-game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = pos
-
-local args = {
-    [1] = "Boombox",
-    [2] = "7549600066"
-}
-
-game:GetService("ReplicatedStorage"):FindFirstChild(".gg/untitledhood"):FireServer(unpack(args))
-wait(1.4)
-
-local args = {
-    [1] = "BoomboxStop"
-}
-
-game:GetService("ReplicatedStorage"):FindFirstChild(".gg/untitledhood"):FireServer(unpack(args))
-end)
-tool.Parent = game.Players.LocalPlayer.Backpack
-end
-
-function loaddestroyexp()
-local player = game.Players.LocalPlayer
-local mouse = player:GetMouse()
-
-local tool = Instance.new("Tool")
-tool.RequiresHandle = false
-tool.Name = "Anti Exploiters"
-
-local function respawnTool()
-    local backpack = player.Backpack
-    local existingTool = backpack:FindFirstChild(tool.Name)
-    if not existingTool then
-        tool.Parent = backpack
-    end
-end
-
-tool.Activated:Connect(function()
-    local pos = mouse.Hit + Vector3.new(0, 2.5, 0)
-    pos = CFrame.new(pos.X, pos.Y, pos.Z)
-    local vim = game:GetService("VirtualInputManager")
-    vim:SendKeyEvent(true, "X", false, game)
-end)
-
-player.CharacterAdded:Connect(respawnTool)
-
-respawnTool()
-
-local FINOBE_KEYBIND = "X"
-
-getgenv().Finobe1 = true 
-local NewCFrame = CFrame.new
-local LocalFinobe = game.Players.LocalPlayer
-local InputService = game:GetService("UserInputService")
-local Runfinobe = game:GetService("RunService")
-
-local Finobe2; 
-Runfinobe.heartbeat:Connect(function()
-    if LocalFinobe.Character then 
-        local FinobeChar = LocalFinobe.Character.HumanoidRootPart
-        local Offset = FinobeChar.CFrame * NewCFrame(9e9, 0/0, math.huge)
-        
-        if getgenv().Finobe1 then 
-            Finobe2 = FinobeChar.CFrame
-            FinobeChar.CFrame = Offset
-            Runfinobe.RenderStepped:Wait()
-            FinobeChar.CFrame = Finobe2
-        end 
-    end 
-end)
-
-InputService.InputBegan:Connect(function(sigma)
-    if sigma.KeyCode == Enum.KeyCode[FINOBE_KEYBIND] then 
-        getgenv().Finobe1 = not getgenv().Finobe1
-        
-        if not Finobe1 then 
-            LocalFinobe.Character.HumanoidRootPart.CFrame = Finobe2
-            -- 
-            game:GetService("StarterGui"):SetCore("SendNotification",{
-                Title = "Destroy Exploiters";
-                Text = "Disabled";
-            })
-        else 
-            Finobe2 = nil 
-            -- 
-            game:GetService("StarterGui"):SetCore("SendNotification",{
-                Title = "Destroy Exploiters";
-                Text = "Enabled";
-            })
-        end 
-    end 
-end)    
-
-local finobeHookSigmaChatWtfCreateRemindedMeAboutThisShittyAssExploitBtw_MiseryOwnerIsACuck
-finobeHookSigmaChatWtfCreateRemindedMeAboutThisShittyAssExploitBtw_MiseryOwnerIsACuck = hookmetamethod(game, "__index", newcclosure(function(self, key)
-    if not checkcaller() then
-        if key == "CFrame" and getgenv().Finobe1 and LocalFinobe.Character and LocalFinobe.Character:FindFirstChild("HumanoidRootPart") and LocalFinobe.Character:FindFirstChild("Humanoid") and LocalFinobe.Character:FindFirstChild("Humanoid").Health > 0 then
-            if self == LocalFinobe.Character.HumanoidRootPart and Finobe2 ~= nil then
-                return Finobe2
-            end
-        end
-    end
-    -- 
-    return finobeHookSigmaChatWtfCreateRemindedMeAboutThisShittyAssExploitBtw_MiseryOwnerIsACuck(self, key)
-    end))
-end
-
 function StopAudio()
     game:GetService("ReplicatedStorage"):WaitForChild("MainEvent"):FireServer("BoomboxStop")
 end
@@ -163,391 +50,6 @@ function Play(ID)
             end)
         cor()
     end
-end
-
-function loadneck()
-    local Workspace = game:GetService("Workspace")
-    local Players = game:GetService("Players")
-    local LocalPlayer = Players.LocalPlayer
-    local Character = LocalPlayer.Character
-    
-    local IM = game:GetService("ReplicatedStorage").IM.ANIM
-    
-    local PlayersChar = Workspace.Players
-    
-    if _G.JOINTWATCHER then
-        _G.JOINTWATCHER:Disconnect()
-    end
-    
-    local function Align(P0, P1, P, R)
-        local A0, A1 = Instance.new("Attachment", P0), Instance.new("Attachment", P1)
-        
-        local AP, AO = Instance.new("AlignPosition", P0), Instance.new("AlignOrientation", P0)
-        
-        A1.Position = P
-        A0.Rotation = R
-        
-        AP.RigidityEnabled = true
-        AP.Responsiveness = 200
-        AP.Attachment0 = A0
-        AP.Attachment1 = A1
-        
-        AO.MaxTorque = 9e9
-        AO.Responsiveness = 200
-        AO.RigidityEnabled = true
-        AO.Attachment0 = A0
-        AO.Attachment1 = A1
-        
-        return A0, A1, AP, A0
-    end
-    
-    _G.JOINTWATCHER = PlayersChar.DescendantAdded:Connect(function(Ins)
-        if Ins:IsA("Weld") and Ins.Name == "GRABBING_CONSTRAINT" then
-            repeat task.wait() until Ins.Part0 ~= nil
-            repeat task.wait() until Ins:FindFirstChildOfClass("RopeConstraint")
-            
-            local AT0, AT1, AP, A0
-            
-            if Ins.Part0:IsDescendantOf(LocalPlayer.Character) then
-                Ins:FindFirstChildOfClass("RopeConstraint").Length = 9e9
-                
-                Character.Animate.Disabled = true
-				
-                for _, Anim in pairs(Character.Humanoid:GetPlayingAnimationTracks()) do
-                    Anim:Stop()
-                end
-                
-                Character.Animate.Disabled = false
-				
-local DefaultDanceanim = Instance.new('Animation')
-DefaultDanceanim.AnimationId = "rbxassetid://3135389157"
-
-local humanoid = game:GetService('Players').LocalPlayer.Character:FindFirstChildWhichIsA('Humanoid')
-local animation = humanoid:LoadAnimation(DefaultDanceanim)
-
-animation:Play()
-animation.TimePosition = 0
-animation:AdjustSpeed(0.2)
-
-            local DefaultDanceanim2 = Instance.new('Animation')
-            DefaultDanceanim2.AnimationId = "rbxassetid://3135389157"
-            
-            local humanoid = Character:FindFirstChildWhichIsA('Humanoid')
-            local animation2 = humanoid:LoadAnimation(DefaultDanceanim2)
-
-            animation2:Play()
-            animation2.TimePosition = 0.1
-            animation2:AdjustSpeed(0) 
-				
-                AT0, AT1, AP, A0 = Align(Ins.Parent.UpperTorso, LocalPlayer.Character.RightHand, Vector3.new(1, -0, -0), Vector3.new(90, 70, 160))
-            end
-            
-            repeat task.wait() until Ins.Parent == nil
-            
-            Character.Animate.Disabled = true
-                
-        for _, Anim in pairs(Character.Humanoid:GetPlayingAnimationTracks()) do
-            Anim:Stop()
-        end
-        
-        Character.Animate.Disabled = false
-            
-            AT0:Destroy()
-            AT1:Destroy()
-            AP:Destroy()
-            A0:Destroy()
-        end
-    end)
-end
-
-function loadrip()
-    local KIckAnim = Instance.new('Animation')
-    KIckAnim.AnimationId = "rbxassetid://13850675130"
-    local tool = Instance.new("Tool")
-    tool.RequiresHandle = false
-    tool.Name = "Rip In Half"
-    
-    tool.Activated:Connect(function()
-        local grabbedValue = game.Players.LocalPlayer.Character.BodyEffects.Grabbed.Value
-        if not grabbedValue then
-            notify("cannot active tool drag player first", "drag player first to work", "rbxthumb://type=Asset&id=9915433572&w=150&h=150", 4)
-            return
-        end
-        
-        wait(.1)
-        game.ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("I’m gonna rip you in half now.", "All")
-        Play(7148332723)
-        wait(2.3)
-        Play(4752240968)
-        local humanoid = game:GetService('Players').LocalPlayer.Character:FindFirstChildWhichIsA('Humanoid')
-        if humanoid then
-            wait(0.3) humanoid:LoadAnimation(KIckAnim):Play()
-        end
-        wait(0.1)
-        
-        local grabbedCharacter = game.Players:GetPlayerFromCharacter(grabbedValue).Character
-        if grabbedCharacter then
-            local lowerTorso = grabbedCharacter:FindFirstChild("LowerTorso")
-            if lowerTorso then
-                lowerTorso.Position = Vector3.new(0, -1200, 0)
-            end
-
-            local RightUpperArm = grabbedCharacter:FindFirstChild("RightUpperArm")
-            if RightUpperArm then
-                RightUpperArm.Position = Vector3.new(0, -1200, 0)
-            end
-
-           local LeftUpperArm = grabbedCharacter:FindFirstChild("LeftUpperArm")
-            if LeftUpperArm then
-                LeftUpperArm.Position = Vector3.new(0, -1200, 0)
-            end
-
-           local RightUpperLeg = grabbedCharacter:FindFirstChild("RightUpperLeg")
-            if RightUpperLeg then
-                RightUpperLeg.Position = Vector3.new(0, -1200, 0)
-            end
-
-           local LeftUpperLeg = grabbedCharacter:FindFirstChild("LeftUpperLeg")
-            if LeftUpperLeg then
-                LeftUpperLeg.Position = Vector3.new(0, -1200, 0)
-            end
-        end
-        
-        wait(0.1)
-        game.ReplicatedStorage.MainEvent:FireServer("Grabbing")
-    end)
-    
-    tool.Parent = game.Players.LocalPlayer.Backpack
-end
-
-function loadsuperthrow()
-getgenv().POWERFLING = 800
-local KIckAnim = Instance.new('Animation');
-KIckAnim.AnimationId = "rbxassetid://3096047107";
-tool = Instance.new("Tool")
-tool.RequiresHandle = false
-tool.Name = "Super Throw"
-tool.Activated:Connect(function()
-    game:GetService('Players').LocalPlayer.Character:FindFirstChildWhichIsA('Humanoid'):LoadAnimation(KIckAnim):Play()
-    wait(.1)
-    for i , v in pairs(game.Players[tostring(game.Players.LocalPlayer.Character.BodyEffects.Grabbed.Value)].Character:GetChildren()) do
-	    if v:IsA("MeshPart") then
-		    v.CFrame =  game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(100, 0, 100)
-		end
-	end
-	game:GetService("RunService").heartbeat:Connect(function()
-    for _, v in next, game:GetService("Players").LocalPlayer.Character:FindFirstChildOfClass("Humanoid"):GetPlayingAnimationTracks() do
-        if (v.Animation.AnimationId:match("rbxassetid://3096047107")) then
-            local Vel = game.Players.LocalPlayer.Character.HumanoidRootPart.Velocity
-            game.Players.LocalPlayer.Character.HumanoidRootPart.Velocity = Vector3.new(game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame.LookVector.X*getgenv().POWERFLING,game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame.LookVector.Z*getgenv().POWERFLING)
-            game:GetService("RunService").RenderStepped:Wait()
-            game.Players.LocalPlayer.Character.HumanoidRootPart.Velocity = Vel
-            end
-        end
-    end)
-    wait(0.3)
-   Play(2174940386)
-    game.ReplicatedStorage.MainEvent:FireServer("Grabbing")
-end)
-tool.Parent = game.Players.LocalPlayer.Backpack
-
-game:GetService('Players').LocalPlayer.Character:WaitForChild('FULLY_LOADED_CHAR');
-
-end
-
-function loadthrow()
-getgenv().POWERFLING = 400
-local KIckAnim = Instance.new('Animation');
-KIckAnim.AnimationId = "rbxassetid://3096047107";
-tool = Instance.new("Tool")
-tool.RequiresHandle = false
-tool.Name = "Throw"
-tool.Activated:Connect(function()
-    game:GetService('Players').LocalPlayer.Character:FindFirstChildWhichIsA('Humanoid'):LoadAnimation(KIckAnim):Play()
-    wait(.1)
-    for i , v in pairs(game.Players[tostring(game.Players.LocalPlayer.Character.BodyEffects.Grabbed.Value)].Character:GetChildren()) do
-	    if v:IsA("MeshPart") then
-		    v.CFrame =  game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(100, 0, 0)
-		end
-	end
-	game:GetService("RunService").heartbeat:Connect(function()
-    for _, v in next, game:GetService("Players").LocalPlayer.Character:FindFirstChildOfClass("Humanoid"):GetPlayingAnimationTracks() do
-        if (v.Animation.AnimationId:match("rbxassetid://3096047107")) then
-            local Vel = game.Players.LocalPlayer.Character.HumanoidRootPart.Velocity
-            game.Players.LocalPlayer.Character.HumanoidRootPart.Velocity = Vector3.new(game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame.LookVector.X*getgenv().POWERFLING,game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame.LookVector.Z*getgenv().POWERFLING)
-            game:GetService("RunService").RenderStepped:Wait()
-            game.Players.LocalPlayer.Character.HumanoidRootPart.Velocity = Vel
-            end
-        end
-    end)
-	wait(0.1)
-	game.ReplicatedStorage.MainEvent:FireServer("Grabbing")
-	Play(2174940386)
-end)
-tool.Parent = game.Players.LocalPlayer.Backpack
-
-game:GetService('Players').LocalPlayer.Character:WaitForChild('FULLY_LOADED_CHAR');
-
-end
-
-function loadbreakarms()
-    local KIckAnim = Instance.new('Animation')
-    KIckAnim.AnimationId = "rbxassetid://3096047107"
-    local tool = Instance.new("Tool")
-    tool.RequiresHandle = false
-    tool.Name = "break arms"
-    
-    tool.Activated:Connect(function()
-        local grabbedValue = game.Players.LocalPlayer.Character.BodyEffects.Grabbed.Value
-        if not grabbedValue then
-            notify("cannot active tool drag player first", "drag player first to work", "rbxthumb://type=Asset&id=9915433572&w=150&h=150", 4)
-            return
-        end
-        
-        wait(.1)
-        game.ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("hifgg js took ur arms gng", "All")
-        Play(4752240968)
-        local humanoid = game:GetService('Players').LocalPlayer.Character:FindFirstChildWhichIsA('Humanoid')
-        if humanoid then
-            wait(0.1) humanoid:LoadAnimation(KIckAnim):Play()
-        end
-        wait(0.1)
-        
-        local grabbedCharacter = game.Players:GetPlayerFromCharacter(grabbedValue).Character
-        if grabbedCharacter then
-            local RightUpperArm = grabbedCharacter:FindFirstChild("RightUpperArm")
-            if RightUpperArm then
-                RightUpperArm.Position = Vector3.new(0, -1200, 0)
-            end
-
-           local LeftUpperArm = grabbedCharacter:FindFirstChild("LeftUpperArm")
-            if LeftUpperArm then
-                LeftUpperArm.Position = Vector3.new(0, -1200, 0)
-            end
-        end
-        
-        wait(0.1)
-        game.ReplicatedStorage.MainEvent:FireServer("Grabbing")
-    end)
-    
-    tool.Parent = game.Players.LocalPlayer.Backpack
-end
-
-function loadbreaklimbs()
-    local KIckAnim = Instance.new('Animation')
-    KIckAnim.AnimationId = "rbxassetid://3096047107"
-    local tool = Instance.new("Tool")
-    tool.RequiresHandle = false
-    tool.Name = "break limbs"
-    
-    tool.Activated:Connect(function()
-        local grabbedValue = game.Players.LocalPlayer.Character.BodyEffects.Grabbed.Value
-        if not grabbedValue then
-            notify("cannot active tool drag player first", "drag player first to work", "rbxthumb://type=Asset&id=9915433572&w=150&h=150", 4)
-            return
-        end
-        
-        wait(.1)
-        game.ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("hifgg js took ur limbs gng", "All")
-        Play(4752240968)
-        local humanoid = game:GetService('Players').LocalPlayer.Character:FindFirstChildWhichIsA('Humanoid')
-        if humanoid then
-            wait(0.1) humanoid:LoadAnimation(KIckAnim):Play()
-        end
-        wait(0.1)
-        
-        local grabbedCharacter = game.Players:GetPlayerFromCharacter(grabbedValue).Character
-        if grabbedCharacter then
-            local RightUpperArm = grabbedCharacter:FindFirstChild("RightUpperArm")
-            if RightUpperArm then
-                RightUpperArm.Position = Vector3.new(0, -1200, 0)
-            end
-
-           local LeftUpperArm = grabbedCharacter:FindFirstChild("LeftUpperArm")
-            if LeftUpperArm then
-                LeftUpperArm.Position = Vector3.new(0, -1200, 0)
-            end
-
-           local RightUpperLeg = grabbedCharacter:FindFirstChild("RightUpperLeg")
-            if RightUpperLeg then
-                RightUpperLeg.Position = Vector3.new(0, -1200, 0)
-            end
-
-           local LeftUpperLeg = grabbedCharacter:FindFirstChild("LeftUpperLeg")
-            if LeftUpperLeg then
-                LeftUpperLeg.Position = Vector3.new(0, -1200, 0)
-            end
-        end
-        
-        wait(0.1)
-        game.ReplicatedStorage.MainEvent:FireServer("Grabbing")
-    end)
-    
-    tool.Parent = game.Players.LocalPlayer.Backpack
-end
-
-function loadhold()
-    local KIckAnim = Instance.new('Animation');
-    KIckAnim.AnimationId = "rbxassetid://3355740058";
-        tool = Instance.new("Tool")
-        tool.RequiresHandle = false
-        tool.Name = "Activate"
-        tool.Activated:Connect(function()
-           Play(2848703459)
-            game.ReplicatedStorage.MainEvent:FireServer("Grabbing",true)
-        wait(0.1)
-        end)
-        tool.Parent = game.Players.LocalPlayer.Backpack
-           
-    game:GetService('Players').LocalPlayer.Character:WaitForChild('FULLY_LOADED_CHAR');
-end
-
-function loadppbat()
-local savepos = game.Players.LocalPlayer.Character.UpperTorso.Position
-             local Brokie = game.Workspace.Ignored.Shop["[Bat] - $265"]
-             game.Players.LocalPlayer.Character:MoveTo(Brokie.Head.Position)
-             wait(0.25)
-             fireclickdetector(Brokie.ClickDetector)
-             wait(0.25)
-         game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(savepos)
-         wait(.25)
-     local surg = game.Players.LocalPlayer.Backpack:FindFirstChild("[Bat]")
-      surg.Parent = game.Players.LocalPlayer.Character
-      local New = game.Players.LocalPlayer.Character:FindFirstChild("[Bat]")
-       New.Parent = game.Players.LocalPlayer.Backpack
-
-game.Players.LocalPlayer.Backpack:FindFirstChild("[Bat]").GripPos = Vector3.new(-1.5,-1,1.55)
-    game.Players.LocalPlayer.Backpack:FindFirstChild("[Bat]").GripForward = Vector3.new(0, 0, 0)
-    game.Players.LocalPlayer.Backpack:FindFirstChild("[Bat]").GripRight = Vector3.new(0.19607843458652496, 0.019607843831181526, 0.9803922176361084)
-
-game.Players.LocalPlayer.Backpack:FindFirstChild("[Bat]").GripUp = Vector3.new(-0.9755268096923828, -0.09755268692970276, 0.19705550372600555)
-
-game.Players.LocalPlayer.Backpack:FindFirstChild("[Bat]")
-    game.Players.LocalPlayer.Backpack:FindFirstChild("[Bat]")
-    game.Players.LocalPlayer.Backpack:FindFirstChild("[Bat]")
-    game.Players.LocalPlayer.Backpack:FindFirstChild("[Bat]")
-    game.Players.LocalPlayer.Backpack["[Bat]"].Parent = game.Players.LocalPlayer.Character
-end
-
-function loadppstopsign()
-local d = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
-    local k = game.Workspace.Ignored.Shop["[StopSign] - $318"]
-    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = k.Head.CFrame + Vector3.new(0, 3, 0)
-    if (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - k.Head.Position).Magnitude <= 50 then
-        wait(.2)
-        fireclickdetector(k:FindFirstChild("ClickDetector"), 4)
-        toolf = game.Players.LocalPlayer.Backpack:WaitForChild("[StopSign]")
-        toolf.Parent = game.Players.LocalPlayer.Character
-        end
-game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(d)
-wait()
-local Plr = game.Players.LocalPlayer
-local LastPos = Plr.Character.HumanoidRootPart.CFrame
-local pp = Plr.Character["[StopSign]"]
-wait(0.1)
-pp.Sign:Destroy()
-
-pp.Grip = CFrame.new(-1, 2, 1.45000005, 0, -0, -1, -0, 1, -0, 1, 0, -0)
 end
 
 function load()
@@ -1506,13 +1008,13 @@ function load()
 			
 			Script.Functions.AntiSTOMP = function()
 			    if Settings.Misc.Exploits.AntiStomp then
-				    if LocalPlayer.Character.Humanoid.Health < 10 then
+                    if LocalPlayer.Character.Humanoid.Health < 15 then
                         for __, v in pairs(LocalPlayer.Character:GetDescendants()) do
                             if v:IsA("BasePart") then
                                 v:Destroy()
-                            end
-                        end
-                    end
+							end
+						end
+					end
 				end
 			end
 			
@@ -2014,7 +1516,7 @@ function load()
 
         --// Main Window
         local Window = Library:CreateWindow({
-            Title = "Azure.lua",
+            Title = "AzureV4Modded.lua",
             Center = true,
             AutoShow = true,
             TabPadding = 8,
@@ -2026,6 +1528,7 @@ function load()
             Visuals = Window:AddTab("Visuals"),
             AntiAim = Window:AddTab("Anti Aim"),
             Misc = Window:AddTab("Misc"),
+			TeleportMap = Window:AddTab("Teleport"),
             Settings = Window:AddTab("Settings")
         }
 
@@ -2057,8 +1560,13 @@ function load()
             },
             Misc = {
                 Speed = Tabs.Misc:AddLeftGroupbox("CFrame Speed"),
-                Exploits = Tabs.Misc:AddRightGroupbox("Exploits")
-            }
+                Exploits = Tabs.Misc:AddRightGroupbox("Exploits"),
+				Experimental = Tabs.Misc:AddLeftGroupbox("Experimental")
+				Animation = Tabs.Misc:AddRightGroupbox("Animations")
+            },
+			TeleportMap = {
+			    Teleport = Tabs.TeleportMap:AddLeftGroupbox("Map Teleport")
+			}
         }
 
         --// Combat Tab
@@ -3548,6 +3056,26 @@ function load()
                     Settings.Misc.Exploits.AutoReload = Toggles.MiscExploitsAutoReload.Value
                 end)
 				
+                Sections.Misc.Exploits:AddToggle("MiscExploitsNoRecoil", {
+                    Text = "No Recoil",
+                    Default = false,
+                    Tooltip = nil,
+                })
+
+                Toggles.MiscExploitsNoRecoil:OnChanged(function()
+                    Settings.Misc.Exploits.NoRecoil = Toggles.MiscExploitsNoRecoil.Value
+                end)
+
+                Sections.Misc.Exploits:AddToggle("MiscExploitsNoJumpCooldown", {
+                    Text = "No Jump Cooldown",
+                    Default = false,
+                    Tooltip = nil,
+                })
+
+                Toggles.MiscExploitsNoJumpCooldown:OnChanged(function()
+                    Settings.Misc.Exploits.NoJumpCooldown = Toggles.MiscExploitsNoJumpCooldown.Value
+                end)
+				
                 Sections.Misc.Exploits:AddToggle("MiscExploitsAutoArmor", {
                     Text = "Auto Armor",
                     Default = false,
@@ -3567,31 +3095,937 @@ function load()
                 Toggles.MiscExploitsAutoFireArmor:OnChanged(function()
                     Settings.Misc.Exploits.AutoFireArmor = Toggles.MiscExploitsAutoFireArmor.Value
                 end)
-				
-				Sections.Misc.Exploits:AddButton("Destroy EXP", function() loaddestroyexp()
-				end)
-                Sections.Misc.Exploits:AddButton("Neck Grab", function() loadneck()
-                end)
-                Sections.Misc.Exploits:AddButton("Holding", function() loadhold()
-                end)
-				Sections.Misc.Exploits:AddButton("Rip In Half", function() loadrip()
-				end)
-				Sections.Misc.Exploits:AddButton("Throw", function() loadthrow()
-				end)
-				Sections.Misc.Exploits:AddButton("Super Throw", function() loadsuperthrow()
-				end)
-				Sections.Misc.Exploits:AddButton("Break Arms", function() loadbreakarms()
-				end)
-				Sections.Misc.Exploits:AddButton("Break Limbs", function() loadbreaklimbs()
-				end)
-				Sections.Misc.Exploits:AddButton("TP Tool", function() loadtp()
-				end)
-				Sections.Misc.Exploits:AddButton("PP Bat", function() loadppbat()
-				end)
-				Sections.Misc.Exploits:AddButton("PP StopSign", function() loadppstopsign()
-				end)
+            end
+			
+			--// Experimental
+			do
+			    Sections.Misc.Experimental:AddButton("Destroy EXP", function()
+local player = game.Players.LocalPlayer
+local mouse = player:GetMouse()
+
+local tool = Instance.new("Tool")
+tool.RequiresHandle = false
+tool.Name = "Anti Exploiters"
+
+local function respawnTool()
+    local backpack = player.Backpack
+    local existingTool = backpack:FindFirstChild(tool.Name)
+    if not existingTool then
+        tool.Parent = backpack
+    end
+end
+
+tool.Activated:Connect(function()
+    local pos = mouse.Hit + Vector3.new(0, 2.5, 0)
+    pos = CFrame.new(pos.X, pos.Y, pos.Z)
+    local vim = game:GetService("VirtualInputManager")
+    vim:SendKeyEvent(true, "X", false, game)
+end)
+
+player.CharacterAdded:Connect(respawnTool)
+
+respawnTool()
+
+local FINOBE_KEYBIND = "X"
+
+getgenv().Finobe1 = true 
+local NewCFrame = CFrame.new
+local LocalFinobe = game.Players.LocalPlayer
+local InputService = game:GetService("UserInputService")
+local Runfinobe = game:GetService("RunService")
+
+local Finobe2; 
+Runfinobe.heartbeat:Connect(function()
+    if LocalFinobe.Character then 
+        local FinobeChar = LocalFinobe.Character.HumanoidRootPart
+        local Offset = FinobeChar.CFrame * NewCFrame(9e9, 0/0, math.huge)
+        
+        if getgenv().Finobe1 then 
+            Finobe2 = FinobeChar.CFrame
+            FinobeChar.CFrame = Offset
+            Runfinobe.RenderStepped:Wait()
+            FinobeChar.CFrame = Finobe2
+        end 
+    end 
+end)
+
+InputService.InputBegan:Connect(function(sigma)
+    if sigma.KeyCode == Enum.KeyCode[FINOBE_KEYBIND] then 
+        getgenv().Finobe1 = not getgenv().Finobe1
+        
+        if not Finobe1 then 
+            LocalFinobe.Character.HumanoidRootPart.CFrame = Finobe2
+            -- 
+            game:GetService("StarterGui"):SetCore("SendNotification",{
+                Title = "Destroy Exploiters";
+                Text = "Disabled";
+            })
+        else 
+            Finobe2 = nil 
+            -- 
+            game:GetService("StarterGui"):SetCore("SendNotification",{
+                Title = "Destroy Exploiters";
+                Text = "Enabled";
+            })
+        end 
+    end 
+end)    
+
+local finobeHookSigmaChatWtfCreateRemindedMeAboutThisShittyAssExploitBtw_MiseryOwnerIsACuck
+finobeHookSigmaChatWtfCreateRemindedMeAboutThisShittyAssExploitBtw_MiseryOwnerIsACuck = hookmetamethod(game, "__index", newcclosure(function(self, key)
+    if not checkcaller() then
+        if key == "CFrame" and getgenv().Finobe1 and LocalFinobe.Character and LocalFinobe.Character:FindFirstChild("HumanoidRootPart") and LocalFinobe.Character:FindFirstChild("Humanoid") and LocalFinobe.Character:FindFirstChild("Humanoid").Health > 0 then
+            if self == LocalFinobe.Character.HumanoidRootPart and Finobe2 ~= nil then
+                return Finobe2
             end
         end
+    end
+    -- 
+    return finobeHookSigmaChatWtfCreateRemindedMeAboutThisShittyAssExploitBtw_MiseryOwnerIsACuck(self, key)
+    end))
+				end)
+                Sections.Misc.Experimental:AddButton("Neck Grab", function()
+    local Workspace = game:GetService("Workspace")
+    local Players = game:GetService("Players")
+    local LocalPlayer = Players.LocalPlayer
+    local Character = LocalPlayer.Character
+    
+    local IM = game:GetService("ReplicatedStorage").IM.ANIM
+    
+    local PlayersChar = Workspace.Players
+    
+    if _G.JOINTWATCHER then
+        _G.JOINTWATCHER:Disconnect()
+    end
+    
+    local function Align(P0, P1, P, R)
+        local A0, A1 = Instance.new("Attachment", P0), Instance.new("Attachment", P1)
+        
+        local AP, AO = Instance.new("AlignPosition", P0), Instance.new("AlignOrientation", P0)
+        
+        A1.Position = P
+        A0.Rotation = R
+        
+        AP.RigidityEnabled = true
+        AP.Responsiveness = 200
+        AP.Attachment0 = A0
+        AP.Attachment1 = A1
+        
+        AO.MaxTorque = 9e9
+        AO.Responsiveness = 200
+        AO.RigidityEnabled = true
+        AO.Attachment0 = A0
+        AO.Attachment1 = A1
+        
+        return A0, A1, AP, A0
+    end
+    
+    _G.JOINTWATCHER = PlayersChar.DescendantAdded:Connect(function(Ins)
+        if Ins:IsA("Weld") and Ins.Name == "GRABBING_CONSTRAINT" then
+            repeat task.wait() until Ins.Part0 ~= nil
+            repeat task.wait() until Ins:FindFirstChildOfClass("RopeConstraint")
+            
+            local AT0, AT1, AP, A0
+            
+            if Ins.Part0:IsDescendantOf(LocalPlayer.Character) then
+                Ins:FindFirstChildOfClass("RopeConstraint").Length = 9e9
+                
+                Character.Animate.Disabled = true
+				
+                for _, Anim in pairs(Character.Humanoid:GetPlayingAnimationTracks()) do
+                    Anim:Stop()
+                end
+                
+                Character.Animate.Disabled = false
+				
+local DefaultDanceanim = Instance.new('Animation')
+DefaultDanceanim.AnimationId = "rbxassetid://3135389157"
+
+local humanoid = game:GetService('Players').LocalPlayer.Character:FindFirstChildWhichIsA('Humanoid')
+local animation = humanoid:LoadAnimation(DefaultDanceanim)
+
+animation:Play()
+animation.TimePosition = 0
+animation:AdjustSpeed(0.2)
+
+            local DefaultDanceanim2 = Instance.new('Animation')
+            DefaultDanceanim2.AnimationId = "rbxassetid://3135389157"
+            
+            local humanoid = Character:FindFirstChildWhichIsA('Humanoid')
+            local animation2 = humanoid:LoadAnimation(DefaultDanceanim2)
+
+            animation2:Play()
+            animation2.TimePosition = 0.1
+            animation2:AdjustSpeed(0) 
+				
+                AT0, AT1, AP, A0 = Align(Ins.Parent.UpperTorso, LocalPlayer.Character.RightHand, Vector3.new(1, -0, -0), Vector3.new(90, 70, 160))
+            end
+            
+            repeat task.wait() until Ins.Parent == nil
+            
+            Character.Animate.Disabled = true
+                
+        for _, Anim in pairs(Character.Humanoid:GetPlayingAnimationTracks()) do
+            Anim:Stop()
+        end
+        
+        Character.Animate.Disabled = false
+            
+            AT0:Destroy()
+            AT1:Destroy()
+            AP:Destroy()
+            A0:Destroy()
+        end
+    end)
+                end)
+                Sections.Misc.Experimental:AddButton("Holding", function()
+    local KIckAnim = Instance.new('Animation');
+    KIckAnim.AnimationId = "rbxassetid://3355740058";
+        tool = Instance.new("Tool")
+        tool.RequiresHandle = false
+        tool.Name = "Activate"
+        tool.Activated:Connect(function()
+           Play(2848703459)
+            game.ReplicatedStorage.MainEvent:FireServer("Grabbing",true)
+        wait(0.1)
+        end)
+        tool.Parent = game.Players.LocalPlayer.Backpack
+           
+    game:GetService('Players').LocalPlayer.Character:WaitForChild('FULLY_LOADED_CHAR');
+                end)
+				Sections.Misc.Experimental:AddButton("Rip In Half", function()
+    local KIckAnim = Instance.new('Animation')
+    KIckAnim.AnimationId = "rbxassetid://13850675130"
+    local tool = Instance.new("Tool")
+    tool.RequiresHandle = false
+    tool.Name = "Rip In Half"
+    
+    tool.Activated:Connect(function()
+        local grabbedValue = game.Players.LocalPlayer.Character.BodyEffects.Grabbed.Value
+        if not grabbedValue then
+            notify("cannot active tool drag player first", "drag player first to work", "rbxthumb://type=Asset&id=9915433572&w=150&h=150", 4)
+            return
+        end
+        
+        wait(.1)
+        game.ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("I’m gonna rip you in half now.", "All")
+        Play(7148332723)
+        wait(2.3)
+        Play(4752240968)
+        local humanoid = game:GetService('Players').LocalPlayer.Character:FindFirstChildWhichIsA('Humanoid')
+        if humanoid then
+            wait(0.3) humanoid:LoadAnimation(KIckAnim):Play()
+        end
+        wait(0.1)
+        
+        local grabbedCharacter = game.Players:GetPlayerFromCharacter(grabbedValue).Character
+        if grabbedCharacter then
+            local lowerTorso = grabbedCharacter:FindFirstChild("LowerTorso")
+            if lowerTorso then
+                lowerTorso.Position = Vector3.new(0, -1200, 0)
+            end
+
+            local RightUpperArm = grabbedCharacter:FindFirstChild("RightUpperArm")
+            if RightUpperArm then
+                RightUpperArm.Position = Vector3.new(0, -1200, 0)
+            end
+
+           local LeftUpperArm = grabbedCharacter:FindFirstChild("LeftUpperArm")
+            if LeftUpperArm then
+                LeftUpperArm.Position = Vector3.new(0, -1200, 0)
+            end
+
+           local RightUpperLeg = grabbedCharacter:FindFirstChild("RightUpperLeg")
+            if RightUpperLeg then
+                RightUpperLeg.Position = Vector3.new(0, -1200, 0)
+            end
+
+           local LeftUpperLeg = grabbedCharacter:FindFirstChild("LeftUpperLeg")
+            if LeftUpperLeg then
+                LeftUpperLeg.Position = Vector3.new(0, -1200, 0)
+            end
+        end
+        
+        wait(0.1)
+        game.ReplicatedStorage.MainEvent:FireServer("Grabbing")
+    end)
+    
+    tool.Parent = game.Players.LocalPlayer.Backpack
+				end)
+				Sections.Misc.Experimental:AddButton("Throw", function()
+getgenv().POWERFLING = 400
+local KIckAnim = Instance.new('Animation');
+KIckAnim.AnimationId = "rbxassetid://3096047107";
+tool = Instance.new("Tool")
+tool.RequiresHandle = false
+tool.Name = "Throw"
+tool.Activated:Connect(function()
+    game:GetService('Players').LocalPlayer.Character:FindFirstChildWhichIsA('Humanoid'):LoadAnimation(KIckAnim):Play()
+    wait(.1)
+    for i , v in pairs(game.Players[tostring(game.Players.LocalPlayer.Character.BodyEffects.Grabbed.Value)].Character:GetChildren()) do
+	    if v:IsA("MeshPart") then
+		    v.CFrame =  game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(100, 0, 0)
+		end
+	end
+	game:GetService("RunService").heartbeat:Connect(function()
+    for _, v in next, game:GetService("Players").LocalPlayer.Character:FindFirstChildOfClass("Humanoid"):GetPlayingAnimationTracks() do
+        if (v.Animation.AnimationId:match("rbxassetid://3096047107")) then
+            local Vel = game.Players.LocalPlayer.Character.HumanoidRootPart.Velocity
+            game.Players.LocalPlayer.Character.HumanoidRootPart.Velocity = Vector3.new(game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame.LookVector.X*getgenv().POWERFLING,game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame.LookVector.Z*getgenv().POWERFLING)
+            game:GetService("RunService").RenderStepped:Wait()
+            game.Players.LocalPlayer.Character.HumanoidRootPart.Velocity = Vel
+            end
+        end
+    end)
+	wait(0.1)
+	game.ReplicatedStorage.MainEvent:FireServer("Grabbing")
+	Play(2174940386)
+end)
+tool.Parent = game.Players.LocalPlayer.Backpack
+
+game:GetService('Players').LocalPlayer.Character:WaitForChild('FULLY_LOADED_CHAR');
+
+				end)
+				Sections.Misc.Experimental:AddButton("Super Throw", function()
+getgenv().POWERFLING = 800
+local KIckAnim = Instance.new('Animation');
+KIckAnim.AnimationId = "rbxassetid://3096047107";
+tool = Instance.new("Tool")
+tool.RequiresHandle = false
+tool.Name = "Super Throw"
+tool.Activated:Connect(function()
+    game:GetService('Players').LocalPlayer.Character:FindFirstChildWhichIsA('Humanoid'):LoadAnimation(KIckAnim):Play()
+    wait(.1)
+    for i , v in pairs(game.Players[tostring(game.Players.LocalPlayer.Character.BodyEffects.Grabbed.Value)].Character:GetChildren()) do
+	    if v:IsA("MeshPart") then
+		    v.CFrame =  game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(100, 0, 100)
+		end
+	end
+	game:GetService("RunService").heartbeat:Connect(function()
+    for _, v in next, game:GetService("Players").LocalPlayer.Character:FindFirstChildOfClass("Humanoid"):GetPlayingAnimationTracks() do
+        if (v.Animation.AnimationId:match("rbxassetid://3096047107")) then
+            local Vel = game.Players.LocalPlayer.Character.HumanoidRootPart.Velocity
+            game.Players.LocalPlayer.Character.HumanoidRootPart.Velocity = Vector3.new(game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame.LookVector.X*getgenv().POWERFLING,game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame.LookVector.Z*getgenv().POWERFLING)
+            game:GetService("RunService").RenderStepped:Wait()
+            game.Players.LocalPlayer.Character.HumanoidRootPart.Velocity = Vel
+            end
+        end
+    end)
+    wait(0.3)
+   Play(2174940386)
+    game.ReplicatedStorage.MainEvent:FireServer("Grabbing")
+end)
+tool.Parent = game.Players.LocalPlayer.Backpack
+
+game:GetService('Players').LocalPlayer.Character:WaitForChild('FULLY_LOADED_CHAR');
+
+				end)
+				Sections.Misc.Experimental:AddButton("Break Arms", function()
+    local KIckAnim = Instance.new('Animation')
+    KIckAnim.AnimationId = "rbxassetid://3096047107"
+    local tool = Instance.new("Tool")
+    tool.RequiresHandle = false
+    tool.Name = "break arms"
+    
+    tool.Activated:Connect(function()
+        local grabbedValue = game.Players.LocalPlayer.Character.BodyEffects.Grabbed.Value
+        if not grabbedValue then
+            notify("cannot active tool drag player first", "drag player first to work", "rbxthumb://type=Asset&id=9915433572&w=150&h=150", 4)
+            return
+        end
+        
+        wait(.1)
+        game.ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("hifgg js took ur arms gng", "All")
+        Play(4752240968)
+        local humanoid = game:GetService('Players').LocalPlayer.Character:FindFirstChildWhichIsA('Humanoid')
+        if humanoid then
+            wait(0.1) humanoid:LoadAnimation(KIckAnim):Play()
+        end
+        wait(0.1)
+        
+        local grabbedCharacter = game.Players:GetPlayerFromCharacter(grabbedValue).Character
+        if grabbedCharacter then
+            local RightUpperArm = grabbedCharacter:FindFirstChild("RightUpperArm")
+            if RightUpperArm then
+                RightUpperArm.Position = Vector3.new(0, -1200, 0)
+            end
+
+           local LeftUpperArm = grabbedCharacter:FindFirstChild("LeftUpperArm")
+            if LeftUpperArm then
+                LeftUpperArm.Position = Vector3.new(0, -1200, 0)
+            end
+        end
+        
+        wait(0.1)
+        game.ReplicatedStorage.MainEvent:FireServer("Grabbing")
+    end)
+    
+    tool.Parent = game.Players.LocalPlayer.Backpack
+				end)
+				Sections.Misc.Experimental:AddButton("Break Limbs", function()
+    local KIckAnim = Instance.new('Animation')
+    KIckAnim.AnimationId = "rbxassetid://3096047107"
+    local tool = Instance.new("Tool")
+    tool.RequiresHandle = false
+    tool.Name = "break limbs"
+    
+    tool.Activated:Connect(function()
+        local grabbedValue = game.Players.LocalPlayer.Character.BodyEffects.Grabbed.Value
+        if not grabbedValue then
+            notify("cannot active tool drag player first", "drag player first to work", "rbxthumb://type=Asset&id=9915433572&w=150&h=150", 4)
+            return
+        end
+        
+        wait(.1)
+        game.ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("hifgg js took ur limbs gng", "All")
+        Play(4752240968)
+        local humanoid = game:GetService('Players').LocalPlayer.Character:FindFirstChildWhichIsA('Humanoid')
+        if humanoid then
+            wait(0.1) humanoid:LoadAnimation(KIckAnim):Play()
+        end
+        wait(0.1)
+        
+        local grabbedCharacter = game.Players:GetPlayerFromCharacter(grabbedValue).Character
+        if grabbedCharacter then
+            local RightUpperArm = grabbedCharacter:FindFirstChild("RightUpperArm")
+            if RightUpperArm then
+                RightUpperArm.Position = Vector3.new(0, -1200, 0)
+            end
+
+           local LeftUpperArm = grabbedCharacter:FindFirstChild("LeftUpperArm")
+            if LeftUpperArm then
+                LeftUpperArm.Position = Vector3.new(0, -1200, 0)
+            end
+
+           local RightUpperLeg = grabbedCharacter:FindFirstChild("RightUpperLeg")
+            if RightUpperLeg then
+                RightUpperLeg.Position = Vector3.new(0, -1200, 0)
+            end
+
+           local LeftUpperLeg = grabbedCharacter:FindFirstChild("LeftUpperLeg")
+            if LeftUpperLeg then
+                LeftUpperLeg.Position = Vector3.new(0, -1200, 0)
+            end
+        end
+        
+        wait(0.1)
+        game.ReplicatedStorage.MainEvent:FireServer("Grabbing")
+    end)
+    
+    tool.Parent = game.Players.LocalPlayer.Backpack
+				end)
+				Sections.Misc.Experimental:AddButton("TP Tool", function()
+mouse = game.Players.LocalPlayer:GetMouse()
+tool = Instance.new("Tool")
+tool.RequiresHandle = false
+tool.Name = "Teleport"
+tool.Activated:connect(function()
+local pos = mouse.Hit+Vector3.new(0,2.5,0)
+pos = CFrame.new(pos.X,pos.Y,pos.Z)
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = pos
+
+local args = {
+    [1] = "Boombox",
+    [2] = "7549600066"
+}
+
+game:GetService("ReplicatedStorage"):FindFirstChild(".gg/untitledhood"):FireServer(unpack(args))
+wait(1.4)
+
+local args = {
+    [1] = "BoomboxStop"
+}
+
+game:GetService("ReplicatedStorage"):FindFirstChild(".gg/untitledhood"):FireServer(unpack(args))
+end)
+tool.Parent = game.Players.LocalPlayer.Backpack
+				end)
+				Sections.Misc.Experimental:AddButton("PP Bat", function()
+local savepos = game.Players.LocalPlayer.Character.UpperTorso.Position
+             local Brokie = game.Workspace.Ignored.Shop["[Bat] - $265"]
+             game.Players.LocalPlayer.Character:MoveTo(Brokie.Head.Position)
+             wait(0.25)
+             fireclickdetector(Brokie.ClickDetector)
+             wait(0.25)
+         game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(savepos)
+         wait(.25)
+     local surg = game.Players.LocalPlayer.Backpack:FindFirstChild("[Bat]")
+      surg.Parent = game.Players.LocalPlayer.Character
+      local New = game.Players.LocalPlayer.Character:FindFirstChild("[Bat]")
+       New.Parent = game.Players.LocalPlayer.Backpack
+
+game.Players.LocalPlayer.Backpack:FindFirstChild("[Bat]").GripPos = Vector3.new(-1.5,-1,1.55)
+    game.Players.LocalPlayer.Backpack:FindFirstChild("[Bat]").GripForward = Vector3.new(0, 0, 0)
+    game.Players.LocalPlayer.Backpack:FindFirstChild("[Bat]").GripRight = Vector3.new(0.19607843458652496, 0.019607843831181526, 0.9803922176361084)
+
+game.Players.LocalPlayer.Backpack:FindFirstChild("[Bat]").GripUp = Vector3.new(-0.9755268096923828, -0.09755268692970276, 0.19705550372600555)
+
+game.Players.LocalPlayer.Backpack:FindFirstChild("[Bat]")
+    game.Players.LocalPlayer.Backpack:FindFirstChild("[Bat]")
+    game.Players.LocalPlayer.Backpack:FindFirstChild("[Bat]")
+    game.Players.LocalPlayer.Backpack:FindFirstChild("[Bat]")
+    game.Players.LocalPlayer.Backpack["[Bat]"].Parent = game.Players.LocalPlayer.Character
+				end)
+				Sections.Misc.Experimental:AddButton("PP StopSign", function()
+local d = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
+    local k = game.Workspace.Ignored.Shop["[StopSign] - $318"]
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = k.Head.CFrame + Vector3.new(0, 3, 0)
+    if (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - k.Head.Position).Magnitude <= 50 then
+        wait(.2)
+        fireclickdetector(k:FindFirstChild("ClickDetector"), 4)
+        toolf = game.Players.LocalPlayer.Backpack:WaitForChild("[StopSign]")
+        toolf.Parent = game.Players.LocalPlayer.Character
+        end
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(d)
+wait()
+local Plr = game.Players.LocalPlayer
+local LastPos = Plr.Character.HumanoidRootPart.CFrame
+local pp = Plr.Character["[StopSign]"]
+wait(0.1)
+pp.Sign:Destroy()
+
+pp.Grip = CFrame.new(-1, 2, 1.45000005, 0, -0, -1, -0, 1, -0, 1, 0, -0)
+				end)
+				
+				                Sections.Misc.Experimental:AddButton("Rape Grab", function()
+    local Workspace = game:GetService("Workspace")
+    local Players = game:GetService("Players")
+    local LocalPlayer = game.Players.LocalPlayer
+    local Character = LocalPlayer.Character
+    
+    local IM = game:GetService("ReplicatedStorage").IM.ANIM
+    
+    local PlayersChar = workspace.Players
+    
+    if _G.JOINTWATCHER then
+        _G.JOINTWATCHER:Disconnect()
+    end
+    
+    local function Align(P0, P1, P, R)
+        local A0, A1 = Instance.new("Attachment", P0), Instance.new("Attachment", P1)
+        
+        local AP, AO = Instance.new("AlignPosition", P0), Instance.new("AlignOrientation", P0)
+        
+        A1.Position = P
+        A0.Rotation = R
+        
+        AP.RigidityEnabled = true
+        AP.Responsiveness = 200
+        AP.Attachment0 = A0
+        AP.Attachment1 = A1
+        
+        AO.MaxTorque = 9e9
+        AO.Responsiveness = 200
+        AO.RigidityEnabled = true
+        AO.Attachment0 = A0
+        AO.Attachment1 = A1
+        
+        return A0, A1, AP, A0
+    end
+    
+    _G.JOINTWATCHER = PlayersChar.DescendantAdded:Connect(function(Ins)
+        if Ins:IsA("Weld") and Ins.Name == "GRABBING_CONSTRAINT" then
+            repeat task.wait() until Ins.Part0 ~= nil
+            repeat task.wait() until Ins:FindFirstChildOfClass("RopeConstraint")
+            
+            local AT0, AT1, AP, A0
+            
+            if Ins.Part0:IsDescendantOf(LocalPlayer.Character) then
+                Ins:FindFirstChildOfClass("RopeConstraint").Length = 9e9
+                
+                Character.Animate.Disabled = true
+                
+                for _, Anim in pairs(Character.Humanoid:GetPlayingAnimationTracks()) do
+                    Anim:Stop()
+                end
+                
+                Character.Animate.Disabled = false
+                
+                Character.Humanoid:LoadAnimation(IM.RightAim):Play()
+                Character.Humanoid:LoadAnimation(IM.LeftAim):Play()
+                
+                AT0, AT1, AP, A0 = Align(Ins.Parent.UpperTorso, LocalPlayer.Character.UpperTorso, Vector3.new(0, 0, 10), Vector3.new(90, 545, 0))
+                
+                spawn(function()
+                    while Ins.Parent ~= nil do
+                        task.wait()
+                        local Sine = tick() * 60
+                        
+                        AT1.Position = Vector3.new(0, -1.2, -4 + 1 * math.sin(Sine / 8))
+                    end
+                end)
+            end
+            
+            repeat task.wait() until Ins.Parent == nil
+            
+            Character.Animate.Disabled = true
+                
+        for _, Anim in pairs(Character.Humanoid:GetPlayingAnimationTracks()) do
+            Anim:Stop()
+        end
+        
+        Character.Animate.Disabled = false
+            
+            AT0:Destroy()
+            AT1:Destroy()
+            AP:Destroy()
+            A0:Destroy()
+        end
+    end)
+                end)
+			end
+			
+			--// Animation
+			do
+			    Sections.Misc.Animations:AddButton("DaHood Animation", function()
+    local Char = game.Players.LocalPlayer.Character
+    local Hum = Char:FindFirstChildOfClass("Humanoid") or Char:FindFirstChildOfClass("AnimationController")
+    
+    for i,v in next, Hum:GetPlayingAnimationTracks() do
+        v:Stop()
+    end
+    wait(1)
+    local Animate = game.Players.LocalPlayer.Character.Animate
+    Animate.idle.Animation1.AnimationId = "http://www.roblox.com/asset/?id=3119980985"
+    Animate.idle.Animation2.AnimationId = "http://www.roblox.com/asset/?id=3119980985"
+    Animate.walk.WalkAnim.AnimationId = "http://www.roblox.com/asset/?id=707897309"
+    Animate.run.RunAnim.AnimationId = "http://www.roblox.com/asset/?id=2791325054"
+    Animate.jump.JumpAnim.AnimationId = "http://www.roblox.com/asset/?id=707853694"
+    Animate.climb.ClimbAnim.AnimationId = "http://www.roblox.com/asset/?id=3135793091"
+    Animate.fall.FallAnim.AnimationId = "http://www.roblox.com/asset/?id=2791328524"
+    game.Players.LocalPlayer.Character.Humanoid.Jump = true   
+				end)
+				
+				Sections.Misc.Animations:AddButton("Bold Animation", function()
+    local Char = game.Players.LocalPlayer.Character
+    local Hum = Char:FindFirstChildOfClass("Humanoid") or Char:FindFirstChildOfClass("AnimationController")
+    
+    for i,v in next, Hum:GetPlayingAnimationTracks() do
+        v:Stop()
+    end
+    wait(1)
+    local Animate = game.Players.LocalPlayer.Character.Animate
+    Animate.idle.Animation1.AnimationId = "http://www.roblox.com/asset/?id=16738333868"
+    Animate.idle.Animation2.AnimationId = "http://www.roblox.com/asset/?id=16738334710"
+    Animate.walk.WalkAnim.AnimationId = "http://www.roblox.com/asset/?id=16738340646"
+    Animate.run.RunAnim.AnimationId = "http://www.roblox.com/asset/?id=16738337225"
+    Animate.jump.JumpAnim.AnimationId = "http://www.roblox.com/asset/?id=16738336650"
+    Animate.climb.ClimbAnim.AnimationId = "http://www.roblox.com/asset/?id=16738332169"
+    Animate.fall.FallAnim.AnimationId = "http://www.roblox.com/asset/?id=16738333171"
+game.Players.LocalPlayer.Character.Humanoid.Jump = true
+				end)
+				
+				Sections.Misc.Animations:AddButton("Best Animation", function()
+	local Char = game.Players.LocalPlayer.Character
+    local Hum = Char:FindFirstChildOfClass("Humanoid") or Char:FindFirstChildOfClass("AnimationController")
+    
+    for i,v in next, Hum:GetPlayingAnimationTracks() do
+        v:Stop()
+    end
+    wait(1)
+    local Animate = game.Players.LocalPlayer.Character.Animate
+    Animate.idle.Animation1.AnimationId = "http://www.roblox.com/asset/?id=4417977954"
+    Animate.idle.Animation2.AnimationId = "http://www.roblox.com/asset/?id=4417978624"
+    Animate.walk.WalkAnim.AnimationId = "http://www.roblox.com/asset/?id=707897309"
+    Animate.run.RunAnim.AnimationId = "http://www.roblox.com/asset/?id=4417979645"
+    Animate.jump.JumpAnim.AnimationId = "http://www.roblox.com/asset/?id=707853694"
+    Animate.climb.ClimbAnim.AnimationId = "http://www.roblox.com/asset/?id=3135793091"
+    Animate.fall.FallAnim.AnimationId = "http://www.roblox.com/asset/?id=2791328524"
+    game.Players.LocalPlayer.Character.Humanoid.Jump = true   
+    
+				end)
+				
+				Sections.Misc.Animations:AddButton("Mega Animation", function()
+    local Char = game.Players.LocalPlayer.Character
+local Hum = Char:FindFirstChildOfClass("Humanoid") or Char:FindFirstChildOfClass("AnimationController")
+
+for i,v in next, Hum:GetPlayingAnimationTracks() do
+    v:Stop()
+end
+wait(1)
+local Animate = game.Players.LocalPlayer.Character.Animate
+Animate.idle.Animation1.AnimationId = "http://www.roblox.com/asset/?id=707742142"
+Animate.idle.Animation2.AnimationId = "http://www.roblox.com/asset/?id=707855907"
+Animate.walk.WalkAnim.AnimationId = "http://www.roblox.com/asset/?id=707897309"
+Animate.run.RunAnim.AnimationId = "http://www.roblox.com/asset/?id=707861613"
+Animate.jump.JumpAnim.AnimationId = "http://www.roblox.com/asset/?id=707853694"
+Animate.climb.ClimbAnim.AnimationId = "http://www.roblox.com/asset/?id=707826056"
+Animate.fall.FallAnim.AnimationId = "http://www.roblox.com/asset/?id=707829716"
+
+game.Players.LocalPlayer.Character.Humanoid.Jump = true    
+				end)
+				
+				Sections.Misc.Animations:AddButton("Levitation Animation", function()
+local Char = game.Players.LocalPlayer.Character
+local Hum = Char:FindFirstChildOfClass("Humanoid") or Char:FindFirstChildOfClass("AnimationController")
+
+for i,v in next, Hum:GetPlayingAnimationTracks() do
+    v:Stop()
+end
+wait(1)
+local Animate = game.Players.LocalPlayer.Character.Animate
+Animate.idle.Animation1.AnimationId = "http://www.roblox.com/asset/?id=616006778"
+Animate.idle.Animation2.AnimationId = "http://www.roblox.com/asset/?id=616008087"
+Animate.walk.WalkAnim.AnimationId = "http://www.roblox.com/asset/?id=616013216"
+Animate.run.RunAnim.AnimationId = "http://www.roblox.com/asset/?id=616010382"
+Animate.jump.JumpAnim.AnimationId = "http://www.roblox.com/asset/?id=616008936"
+Animate.climb.ClimbAnim.AnimationId = "http://www.roblox.com/asset/?id=616003713"
+Animate.fall.FallAnim.AnimationId = "http://www.roblox.com/asset/?id=616005863"
+game.Players.LocalPlayer.Character.Humanoid.Jump = true  
+				end)
+				
+				Sections.Misc.Animations:AddButton("JOJO Animation", function()
+    local Char = game.Players.LocalPlayer.Character
+local Hum = Char:FindFirstChildOfClass("Humanoid") or Char:FindFirstChildOfClass("AnimationController")
+
+for i,v in next, Hum:GetPlayingAnimationTracks() do
+    v:Stop()
+end
+wait(1)
+local Animate = game.Players.LocalPlayer.Character.Animate
+Animate.idle.Animation1.AnimationId = "http://www.roblox.com/asset/?id=1149612882"
+Animate.idle.Animation2.AnimationId = "http://www.roblox.com/asset/?id=1149612882"
+Animate.run.RunAnim.AnimationId = "rbxassetid://1150967949"
+Animate.jump.JumpAnim.AnimationId = "http://www.roblox.com/asset/?id=1148863382"
+Animate.walk.WalkAnim.AnimationId = "rbxassetid://657552124"
+Animate.climb.ClimbAnim.AnimationId = "rbxassetid://658360781"
+Animate.fall.FallAnim.AnimationId = "rbxassetid://1148863382"
+Animate.swim.Swim.AnimationId = "rbxassetid://657560551"
+Animate.swimidle.SwimIdle.AnimationId = "rbxassetid://657557095"
+game.Players.LocalPlayer.Character.Humanoid.Jump = true    
+				end)
+				
+				Sections.Misc.Animations:AddButton("Cool Animation", function()
+local Char = game.Players.LocalPlayer.Character
+local Hum = Char:FindFirstChildOfClass("Humanoid") or Char:FindFirstChildOfClass("AnimationController")
+
+for i,v in next, Hum:GetPlayingAnimationTracks() do
+v:Stop()
+end
+wait(1)
+local Animate = game.Players.LocalPlayer.Character.Animate
+Animate.idle.Animation1.AnimationId = "http://www.roblox.com/asset/?id=10921301576"
+Animate.idle.Animation2.AnimationId = "http://www.roblox.com/asset/?id=10921302207"
+Animate.walk.WalkAnim.AnimationId = "http://www.roblox.com/asset/?id=10921162768"
+Animate.run.RunAnim.AnimationId = "http://www.roblox.com/asset/?id=10921157929"
+Animate.jump.JumpAnim.AnimationId = "http://www.roblox.com/asset/?id=10921242013"
+Animate.climb.ClimbAnim.AnimationId = "http://www.roblox.com/asset/?id=10921229866"
+Animate.fall.FallAnim.AnimationId = "http://www.roblox.com/asset/?id=10921241244"
+game.Players.LocalPlayer.Character.Humanoid.Jump = true
+				end)
+				
+				Sections.Misc.Animations:AddButton("Zombie Animation", function()
+local Char = game.Players.LocalPlayer.Character
+local Hum = Char:FindFirstChildOfClass("Humanoid") or Char:FindFirstChildOfClass("AnimationController")
+
+for i,v in next, Hum:GetPlayingAnimationTracks() do
+    v:Stop()
+end
+wait(1)
+local Animate = game.Players.LocalPlayer.Character.Animate
+    Animate.idle.Animation1.AnimationId = "http://www.roblox.com/asset/?id=10921301576"
+    Animate.idle.Animation2.AnimationId = "http://www.roblox.com/asset/?id=10921302207"
+    Animate.walk.WalkAnim.AnimationId = "http://www.roblox.com/asset/?id=616168032"
+    Animate.run.RunAnim.AnimationId = "http://www.roblox.com/asset/?id=616163682"
+    Animate.jump.JumpAnim.AnimationId = "http://www.roblox.com/asset/?id=616161997"
+    Animate.climb.ClimbAnim.AnimationId = "http://www.roblox.com/asset/?id=616156119"
+    Animate.fall.FallAnim.AnimationId = "http://www.roblox.com/asset/?id=616157476"
+    game.Players.LocalPlayer.Character.Humanoid.Jump = true
+				end)
+				
+				Sections.Misc.Animations:AddButton("Cartoony Animation", function()
+local Char = game.Players.LocalPlayer.Character
+local Hum = Char:FindFirstChildOfClass("Humanoid") or Char:FindFirstChildOfClass("AnimationController")
+
+for i,v in next, Hum:GetPlayingAnimationTracks() do
+    v:Stop()
+end
+wait(1)
+local Animate = game.Players.LocalPlayer.Character.Animate
+    Animate.idle.Animation1.AnimationId = "http://www.roblox.com/asset/?id=742637544"
+    Animate.idle.Animation2.AnimationId = "http://www.roblox.com/asset/?id=742638445"
+    Animate.walk.WalkAnim.AnimationId = "http://www.roblox.com/asset/?id=742640026"
+    Animate.run.RunAnim.AnimationId = "http://www.roblox.com/asset/?id=742638842"
+    Animate.jump.JumpAnim.AnimationId = "http://www.roblox.com/asset/?id=742637942"
+    Animate.climb.ClimbAnim.AnimationId = "http://www.roblox.com/asset/?id=742636889"
+    Animate.fall.FallAnim.AnimationId = "http://www.roblox.com/asset/?id=742637151"
+    game.Players.LocalPlayer.Character.Humanoid.Jump = true
+				end)
+				
+				Sections.Misc.Animations:AddButton("Elder Animation", function()
+    local Char = game.Players.LocalPlayer.Character
+    local Hum = Char:FindFirstChildOfClass("Humanoid") or Char:FindFirstChildOfClass("AnimationController")
+    
+    for i,v in next, Hum:GetPlayingAnimationTracks() do
+        v:Stop()
+    end
+    wait(1)
+    local Animate = game.Players.LocalPlayer.Character.Animate
+    Animate.idle.Animation1.AnimationId = "http://www.roblox.com/asset/?id=845397899"
+    Animate.idle.Animation2.AnimationId = "http://www.roblox.com/asset/?id=845400520"
+    Animate.walk.WalkAnim.AnimationId = "http://www.roblox.com/asset/?id=845403856"
+    Animate.run.RunAnim.AnimationId = "http://www.roblox.com/asset/?id=845386501"
+    Animate.jump.JumpAnim.AnimationId = "http://www.roblox.com/asset/?id=845398858"
+    Animate.climb.ClimbAnim.AnimationId = "http://www.roblox.com/asset/?id=845392038"
+    Animate.fall.FallAnim.AnimationId = "http://www.roblox.com/asset/?id=845396048"
+    game.Players.LocalPlayer.Character.Humanoid.Jump = true
+				end)
+				
+				Sections.Misc.Animations:AddButton("Ninja Animation", function()
+local Char = game.Players.LocalPlayer.Character
+local Hum = Char:FindFirstChildOfClass("Humanoid") or Char:FindFirstChildOfClass("AnimationController")
+
+for i,v in next, Hum:GetPlayingAnimationTracks() do
+    v:Stop()
+end
+wait(1)
+local Animate = game.Players.LocalPlayer.Character.Animate
+Animate.idle.Animation1.AnimationId = "http://www.roblox.com/asset/?id=10921301576"
+Animate.idle.Animation2.AnimationId = "http://www.roblox.com/asset/?id=10921302207"
+Animate.walk.WalkAnim.AnimationId = "http://www.roblox.com/asset/?id=656121766"
+Animate.run.RunAnim.AnimationId = "http://www.roblox.com/asset/?id=656118852"
+Animate.jump.JumpAnim.AnimationId = "http://www.roblox.com/asset/?id=656117878"
+Animate.climb.ClimbAnim.AnimationId = "http://www.roblox.com/asset/?id=656114359"
+Animate.fall.FallAnim.AnimationId = "http://www.roblox.com/asset/?id=656115606"
+game.Players.LocalPlayer.Character.Humanoid.Jump = true
+				end)
+				
+				Sections.Misc.Animations:AddButton("No Animation", function()
+    local Char = game.Players.LocalPlayer.Character
+local Hum = Char:FindFirstChildOfClass("Humanoid") or Char:FindFirstChildOfClass("AnimationController")
+
+for i,v in next, Hum:GetPlayingAnimationTracks() do
+    v:Stop()
+end
+wait(1)
+local Animate = game.Players.LocalPlayer.Character.Animate
+Animate.idle.Animation1.AnimationId = "http://www.roblox.com/asset/?id=1"
+Animate.idle.Animation2.AnimationId = "http://www.roblox.com/asset/?id=1"
+Animate.walk.WalkAnim.AnimationId = "http://www.roblox.com/asset/?id=1"
+Animate.run.RunAnim.AnimationId = "http://www.roblox.com/asset/?id=1"
+Animate.jump.JumpAnim.AnimationId = "http://www.roblox.com/asset/?id=1"
+Animate.climb.ClimbAnim.AnimationId = "http://www.roblox.com/asset/?id=1"
+Animate.fall.FallAnim.AnimationId = "http://www.roblox.com/asset/?id=1"
+game.Players.LocalPlayer.Character.Humanoid.Jump = true
+				end)
+			end
+        end
+		
+		--// Teleportation
+		do
+		
+		
+		    --// TeleportMap
+		    do
+		        Sections.TeleportMap.Teleport:AddButton("Uphill GunStore", function()
+				    LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(481.3045959472656, 48.07050323486328, -620.1513671875)
+				end)
+				
+				Sections.TeleportMap.Teleport:AddButton("Downhill GunStore", function()
+				    LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-578.5796508789062, 8.314779281616211, -736.3884887695312)
+				end)
+				
+				Sections.TeleportMap.Teleport:AddButton("Hood Fitness", function()
+				    LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-76.4957275390625, 22.700284957885742, -630.9816284179688)
+				end)
+				
+				Sections.TeleportMap.Teleport:AddButton("Bar", function()
+				    LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-264.5504455566406, 48.52669143676758, -446.29254150390625)
+				end)
+				
+				Sections.TeleportMap.Teleport:AddButton("Bank", function()
+				    LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-432.1439208984375, 38.9649658203125, -284.1016540527344)
+				end)
+				
+				Sections.TeleportMap.Teleport:AddButton("Safe 2", function()
+				    LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-117, -57, 147)
+				end)
+				
+				Sections.TeleportMap.Teleport:AddButton("Safe 3", function()
+				    LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-546, 173, 1)
+				end)
+				
+				Sections.TeleportMap.Teleport:AddButton("Safe 5", function()
+				    LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(0,150,0)
+				end)
+				
+				Sections.TeleportMap.Teleport:AddButton("Safe For Test", function()
+				    LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(11, 12, 214)
+				end)
+				
+				Sections.TeleportMap.Teleport:AddButton("Da Furniture", function()
+				    LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-489.1640319824219, 21.8498477935791, -76.60957336425781)
+				end)
+				
+				Sections.TeleportMap.Teleport:AddButton("School", function()
+				    LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-531.3531494140625, 21.74999237060547, 252.47506713867188)
+				end)
+				
+				Sections.TeleportMap.Teleport:AddButton("Da Casino", function()
+				    LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-863.4664306640625, 21.59995460510254, -152.92788696289062)
+				end)
+				
+				Sections.TeleportMap.Teleport:AddButton("Da Theatre", function()
+				    LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-1004.9942626953125, 25.10002326965332, -135.17315673828125)
+				end)
+				
+				Sections.TeleportMap.Teleport:AddButton("Basketball Court", function()
+				    LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-896.5643310546875, 21.999818801879883, -528.7317504882812)
+				end)
+				
+				Sections.TeleportMap.Teleport:AddButton("Hair Salon", function()
+				    LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-855.55810546875, 22.005008697509766, -665.0170288085938)
+				end)
+				
+				Sections.TeleportMap.Teleport:AddButton("Foods Mart", function()
+				    LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-906.5833740234375, 22.005002975463867, -653.2225952148438)
+				end)
+				
+				Sections.TeleportMap.Teleport:AddButton("Mat Laundry", function()
+				    LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-971.4241333007812, 22.005887985229492, -630.115478515625)
+				end)
+				
+				Sections.TeleportMap.Teleport:AddButton("Swift", function()
+				    LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-799.7603149414062, 21.8799991607666, -662.3109741210938)
+				end)
+				
+				Sections.TeleportMap.Teleport:AddButton("Military Base", function()
+				    LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-50.412960052490234, 25.25499725341797, -868.921142578125)
+				end)
+				
+				Sections.TeleportMap.Teleport:AddButton("Da Boxing Club", function()
+				    LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-232.0669708251953, 22.067293167114258, -1119.9541015625)
+				end)
+				
+				Sections.TeleportMap.Teleport:AddButton("Flowers", function()
+				    LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-71.62272644042969, 23.15056800842285, -327.79412841796875)
+				end)
+				
+				Sections.TeleportMap.Teleport:AddButton("Hospital", function()
+				    LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(98.40196228027344, 22.799989700317383, -484.89385986328125)
+				end)
+				
+				Sections.TeleportMap.Teleport:AddButton("Hood Kicks", function()
+				    LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-203.53347778320312, 21.845796585083008, -410.1529846191406)
+				end)
+				
+				Sections.TeleportMap.Teleport:AddButton("Police Station", function()
+				    LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-265.4999694824219, 21.797977447509766, -96.51517486572266)
+				end)
+				
+				Sections.TeleportMap.Teleport:AddButton("Barba", function()
+				    LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(9.003872871398926, 21.74802017211914, -107.73101043701172)
+				end)
+				
+				Sections.TeleportMap.Teleport:AddButton("Church", function()
+				    LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(205.8213653564453, 23.77802085876465, -58.47077560424805)
+				end)
+				
+				Sections.TeleportMap.Teleport:AddButton("Train", function()
+				    LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-426.41705322265625, -21.25197982788086, 44.953758239746094)
+				end)
+			end
+		end
 
         --// Settings Tab
         do
