@@ -63,7 +63,6 @@ function load()
     local RunService = game:GetService("RunService")
     local TweenService = game:GetService("TweenService")
     local ReplicatedStorage = game:GetService("ReplicatedStorage")
-    local Remote = ReplicatedStorage.MainEvent
 
     --// Variables
     local LocalPlayer = Players.LocalPlayer
