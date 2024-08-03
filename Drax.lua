@@ -1,14 +1,3 @@
---[[ 
-    @title
-        fatality.universal (lua)
-    
-    @author
-        sleeperweda
-
-    @description
-        Beware of 🍝 code.
-]]
-
 local SYC = {
     Modules = {
         UI = {}
