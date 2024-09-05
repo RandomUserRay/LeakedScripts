@@ -1,7 +1,5 @@
 if (not LPH_OBFUSCATED) then
     LPH_NO_VIRTUALIZE = function(...) return (...) end;
-    LPH_JIT_MAX = function(...) return (...) end;
-    LPH_JIT_ULTRA = function(...) return (...) end;
 end
 
 function notify(title, text, icon, duration)
