@@ -678,7 +678,7 @@ function load()
             Script.Functions.GetPredictedPosition = function()
                 local BodyPart = Script.Locals.Target.Character[Settings.Combat.AimPart]
                 local Velocity = Settings.Combat.Resolver.Enabled and Script.Locals.Resolver.ResolvedVelocity or Script.Locals.Target.Character.HumanoidRootPart.Velocity
-                local Position = BodyPart.Position + Velocity * Vector3.new(Settings.Combat.Prediction.Horizontal, Settings.Combat.Prediction.Vertical)
+                local Position = BodyPart.Position + Velocity * Vector3.new(Settings.Combat.Prediction.Horizontal, Settings.Combat.Prediction.Vertical, Settings.Combat.Prediction.Horizontal)
 
                 if Settings.Combat.Air.Enabled and Settings.Combat.Air.JumpOffset.Enabled then
                     Position = Position + Vector3.new(0, Script.Locals.JumpOffset, 0)
