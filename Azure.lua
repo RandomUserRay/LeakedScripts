@@ -1485,8 +1485,8 @@ function load()
         end))
 
         __newindex = hookmetamethod(game, "__newindex", LPH_NO_VIRTUALIZE(function(Self, Property, Value)
-            local CallingScript = getcallingscript() or {}
-
+		    local Framework = LocalPlayer.PlayerGui:FindFirstChild("Framework")
+            local CallingScript = getcallingscript()
 
             --// Atmosphere caching
             if not checkcaller() and Self == Lighting and Script.Locals.World[Property] ~= Value then
@@ -1494,12 +1494,12 @@ function load()
             end
 
             --// No Recoil
-            if CallingScript.Name == "Framework" and Self == Camera and Property == "CFrame" and Settings.Misc.Exploits.Enabled and Settings.Misc.Exploits.NoRecoil then
+            if Framework and CallingScript == Framework and Self == Camera and Property == "CFrame" and Settings.Misc.Exploits.Enabled and Settings.Misc.Exploits.NoRecoil then
                 return
             end
 
             --// No Jump Cooldown
-            if CallingScript.Name == "Framework" and Self == LocalPlayer.Character.Humanoid and Property == "JumpPower" and Settings.Misc.Exploits.Enabled and Settings.Misc.Exploits.NoJumpCooldown then
+            if Framework and CallingScript == Framework and Self == LocalPlayer.Character.Humanoid and Property == "JumpPower" and Settings.Misc.Exploits.Enabled and Settings.Misc.Exploits.NoJumpCooldown then
                 return
             end
 			
