@@ -1,5 +1,5 @@
-if (not LPH_OBFUSCATED) then
-    LPH_NO_VIRTUALIZE = function(...) return (...) end;
+if not LPH_OBFUSCATED then
+    getfenv().LPH_NO_VIRTUALIZE = function(...) return (...) end;
 end
 
 function notify(title, text, icon, duration)
@@ -1463,9 +1463,8 @@ function load()
 
         __namecall = hookmetamethod(game, "__namecall", LPH_NO_VIRTUALIZE(function(Self, ...)
             local Arguments = {...}
-            local Method = tostring(getnamecallmethod())
 
-            if not checkcaller() and Method == "FireServer" then
+            if not checkcaller() and getnamecallmethod() == "FireServer" then
                 for _, Argument in pairs(Arguments) do
                     if typeof(Argument) == "Vector3" then
                         Script.Locals.AntiAimViewer.MouseRemote = Self
@@ -1515,7 +1514,7 @@ function load()
 
         --// Main Window
         local Window = Library:CreateWindow({
-            Title = "AzureV4Modded.lua",
+            Title = "AzureV4.lua",
             Center = true,
             AutoShow = true,
             TabPadding = 8,
