@@ -1485,7 +1485,7 @@ function load()
         end))
 
         __newindex = hookmetamethod(game, "__newindex", LPH_NO_VIRTUALIZE(function(Self, Property, Value)
-            local CallingScript = getcallingscript()
+            local CallingScript = getcallingscript() or {}
 
 
             --// Atmosphere caching
