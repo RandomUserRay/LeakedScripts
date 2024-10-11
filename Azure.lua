@@ -1,5 +1,5 @@
-if not LPH_OBFUSCATED then
-    getfenv().LPH_NO_VIRTUALIZE = function(...) return (...) end;
+if (not LPH_OBFUSCATED) then
+    LPH_NO_VIRTUALIZE = function(...) return (...) end;
 end
 
 function notify(title, text, icon, duration)
@@ -66,6 +66,23 @@ function load()
     local LocalPlayer = Players.LocalPlayer
     local Camera = Workspace:FindFirstChildWhichIsA("Camera")
     local Hitsounds = {}
+	
+	--// Games
+	local Games = {
+    [2788229376] = {Name = "Da Hood",                  Argument = "UpdateMousePosI"},
+    [16033173781] = {Name = "Da Hood Macro",           Argument = "UpdateMousePosI"},
+    [9825515356] = {Name = "Hood Customs",             Argument = "MousePosUpdate"},
+    [5602055394] = {Name = "Hood Modded",              Argument = "MousePos"},
+    [9183932460] = {Name = "Untitled Hood",            Argument = "UpdateMousePos"},
+    [16709048641] = {Name = "Da Downhill",             Argument = "MOUSE"},
+    [16357436647] = {Name = "Hood Bank",               Argument = "MOUSE"},
+    [16357446356] = {Name = "Da Uphill",               Argument = "MOUSE"},
+    [15186202290] = {Name = "Da Strike",               Argument = "MOUSE"},
+    [15763167440] = {Name = "Da Hood Bot Aim Trainer", Argument = "MOUSE"},
+    [11143225577] = {Name = "1v1 Hood Aim Trainer",    Argument = "UpdateMousePos"},
+    [15763494605] = {Name = "Hood Aim",                Argument = "MOUSE"},
+    [15166543806] = {Name = "Moon Hood",               Argument = "MoonUpdateMousePos"},
+}
 
     --// Script Table
     local Script = {
@@ -366,7 +383,6 @@ function load()
 				AutoArmor = false,
 				AutoFireArmor = false,
 				AntiStomp = false,
-				AntiBag = false,
 				AntiGrab = false,
 				AutoStomp = false,
             }
@@ -1017,14 +1033,6 @@ function load()
 				end
 			end
 			
-			Script.Functions.AntiBAG = function()
-			    if Settings.Misc.Exploits.AntiBag then
-				    if LocalPlayer.Character:FindFirstChild("Christmas_Sock") then
-                        LocalPlayer.Character["Christmas_Sock"]:Destroy()
-                    end
-				end
-			end
-			
 			Script.Functions.AntiGRAB = function()
 			    if Settings.Misc.Exploits.AntiGrab then
 				    local grabbingConstraint = game.Players.LocalPlayer.Character:FindFirstChild("GRABBING_CONSTRAINT")
@@ -1439,8 +1447,6 @@ function load()
 				
 				Script.Functions.AntiSTOMP()
 				
-				Script.Functions.AntiBAG()
-				
 				Script.Functions.AntiGRAB()
 				
 				Script.Functions.AutoSTOMP()
@@ -1461,10 +1467,11 @@ function load()
             return __index(Self, Index)
         end))
 
-        __namecall = hookmetamethod(game, "__namecall", LPH_NO_VIRTUALIZE(function(Self, ...)
+        __namecall = hookmetamethod(game, "__namecall", newcclosure(function(Self, ...)
             local Arguments = {...}
+			local Method = tostring(getnamecallmethod())
 
-            if not checkcaller() and getnamecallmethod() == "FireServer" then
+            if not checkcaller() and Method == "FireServer" then
                 for _, Argument in pairs(Arguments) do
                     if typeof(Argument) == "Vector3" then
                         Script.Locals.AntiAimViewer.MouseRemote = Self
@@ -3004,16 +3011,6 @@ function load()
                     Settings.Misc.Exploits.AntiStomp = Toggles.MiscExploitsAntiStomp.Value
                 end)
 				
-                Sections.Misc.Exploits:AddToggle("MiscExploitsAntiBag", {
-                    Text = "Anti Bag",
-                    Default = false,
-                    Tooltip = nil,
-                })
-
-                Toggles.MiscExploitsAntiBag:OnChanged(function()
-                    Settings.Misc.Exploits.AntiBag = Toggles.MiscExploitsAntiBag.Value
-                end)
-				
                 Sections.Misc.Exploits:AddToggle("MiscExploitsAntiGrab", {
                     Text = "Anti Grab",
                     Default = false,
@@ -3183,6 +3180,19 @@ finobeHookSigmaChatWtfCreateRemindedMeAboutThisShittyAssExploitBtw_MiseryOwnerIs
     end))
 				end)
                 Sections.Misc.Experimental:AddButton("Neck Grab", function()
+	    local KIckAnim = Instance.new('Animation');
+    KIckAnim.AnimationId = "rbxassetid://3355740058";
+        tool = Instance.new("Tool")
+        tool.RequiresHandle = false
+        tool.Name = "Activate"
+        tool.Activated:Connect(function()
+           Play(2848703459)
+            game.ReplicatedStorage.MainEvent:FireServer("Grabbing",true)
+        wait(0.1)
+        end)
+        tool.Parent = game.Players.LocalPlayer.Backpack
+           
+    game:GetService('Players').LocalPlayer.Character:WaitForChild('FULLY_LOADED_CHAR');
     local Workspace = game:GetService("Workspace")
     local Players = game:GetService("Players")
     local LocalPlayer = Players.LocalPlayer
@@ -3275,21 +3285,6 @@ animation:AdjustSpeed(0.2)
             A0:Destroy()
         end
     end)
-                end)
-                Sections.Misc.Experimental:AddButton("Holding", function()
-    local KIckAnim = Instance.new('Animation');
-    KIckAnim.AnimationId = "rbxassetid://3355740058";
-        tool = Instance.new("Tool")
-        tool.RequiresHandle = false
-        tool.Name = "Activate"
-        tool.Activated:Connect(function()
-           Play(2848703459)
-            game.ReplicatedStorage.MainEvent:FireServer("Grabbing",true)
-        wait(0.1)
-        end)
-        tool.Parent = game.Players.LocalPlayer.Backpack
-           
-    game:GetService('Players').LocalPlayer.Character:WaitForChild('FULLY_LOADED_CHAR');
                 end)
 				Sections.Misc.Experimental:AddButton("Rip In Half", function()
     local KIckAnim = Instance.new('Animation')
