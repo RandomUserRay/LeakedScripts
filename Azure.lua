@@ -1,8 +1,45 @@
-if (not LPH_OBFUSCATED) then
-    LPH_NO_VIRTUALIZE = function(...) return (...) end;
+function load()
+    --// Services
+    local Players = game:GetService("Players")
+    local UserInputService = game:GetService("UserInputService")
+    local Workspace = game:GetService("Workspace")
+    local Lighting = game:GetService("Lighting")
+    local RunService = game:GetService("RunService")
+    local TweenService = game:GetService("TweenService")
+    local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+    --// Variables
+    local LocalPlayer = Players.LocalPlayer
+    local Camera = Workspace:FindFirstChildWhichIsA("Camera")
+    local Hitsounds = {}
+	
+	--// Games
+local Games = {
+    [2788229376] = {Name = "Da Hood",                  Argument = "UpdateMousePosI"},
+    [16033173781] = {Name = "Da Hood Macro",                  Argument = "UpdateMousePosI"},
+    [9825515356] = {Name = "Hood Customs",             Argument = "MousePosUpdate"},
+    [5602055394] = {Name = "Hood Modded",              Argument = "MousePos"},
+    [9183932460] = {Name = "Untitled Hood",            Argument = "UpdateMousePos"},
+    [16709048641] = {Name = "Da Downhill",             Argument = "MOUSE"},
+    [16357436647] = {Name = "Hood Bank",               Argument = "MOUSE"},
+    [16357446356] = {Name = "Da Uphill",               Argument = "MOUSE"},
+    [15186202290] = {Name = "Da Strike",               Argument = "MOUSE"},
+    [15763167440] = {Name = "Da Hood Bot Aim Trainer", Argument = "MOUSE"},
+    [11143225577] = {Name = "1v1 Hood Aim Trainer",    Argument = "UpdateMousePos"},
+    [15763494605] = {Name = "Hood Aim",                Argument = "MOUSE"},
+    [15166543806] = {Name = "Moon Hood",               Argument = "MoonUpdateMousePos"},
+}
+
+if Games[game.PlaceId] then
+    local gameInfo = Games[game.PlaceId]
+    MousePos = gameInfo.Argument
+else
+    MousePos = "UpdateMousePos"
 end
 
-function notify(title, text, icon, duration)
+    --// Local Functions
+	
+local function notify(title, text, icon, duration)
     game.StarterGui:SetCore("SendNotification", {
         Title = title,
         Text = text,
@@ -11,11 +48,11 @@ function notify(title, text, icon, duration)
     })
 end
 
-function StopAudio()
+local function StopAudio()
     game:GetService("ReplicatedStorage"):WaitForChild("MainEvent"):FireServer("BoomboxStop")
 end
 
-function stop(ID, Key)
+local function stop(ID, Key)
     local OriginalKeyUpValue = 0
     local LocalPlayer = game:GetService("Players").LocalPlayer
     local cor = coroutine.wrap(function()
@@ -27,7 +64,7 @@ function stop(ID, Key)
     cor()
 end
 
-function Play(ID)
+local function Play(ID)
     local OriginalKeyUpValue = 0
     local LocalPlayer = game:GetService("Players").LocalPlayer
     if LocalPlayer.Backpack:FindFirstChild("[Boombox]") then
@@ -51,38 +88,6 @@ function Play(ID)
         cor()
     end
 end
-
-function load()
-    --// Services
-    local Players = game:GetService("Players")
-    local UserInputService = game:GetService("UserInputService")
-    local Workspace = game:GetService("Workspace")
-    local Lighting = game:GetService("Lighting")
-    local RunService = game:GetService("RunService")
-    local TweenService = game:GetService("TweenService")
-    local ReplicatedStorage = game:GetService("ReplicatedStorage")
-
-    --// Variables
-    local LocalPlayer = Players.LocalPlayer
-    local Camera = Workspace:FindFirstChildWhichIsA("Camera")
-    local Hitsounds = {}
-	
-	--// Games
-	local Games = {
-    [2788229376] = {Name = "Da Hood",                  Argument = "UpdateMousePosI"},
-    [16033173781] = {Name = "Da Hood Macro",           Argument = "UpdateMousePosI"},
-    [9825515356] = {Name = "Hood Customs",             Argument = "MousePosUpdate"},
-    [5602055394] = {Name = "Hood Modded",              Argument = "MousePos"},
-    [9183932460] = {Name = "Untitled Hood",            Argument = "UpdateMousePos"},
-    [16709048641] = {Name = "Da Downhill",             Argument = "MOUSE"},
-    [16357436647] = {Name = "Hood Bank",               Argument = "MOUSE"},
-    [16357446356] = {Name = "Da Uphill",               Argument = "MOUSE"},
-    [15186202290] = {Name = "Da Strike",               Argument = "MOUSE"},
-    [15763167440] = {Name = "Da Hood Bot Aim Trainer", Argument = "MOUSE"},
-    [11143225577] = {Name = "1v1 Hood Aim Trainer",    Argument = "UpdateMousePos"},
-    [15763494605] = {Name = "Hood Aim",                Argument = "MOUSE"},
-    [15166543806] = {Name = "Moon Hood",               Argument = "MoonUpdateMousePos"},
-}
 
     --// Script Table
     local Script = {
@@ -819,11 +824,10 @@ function load()
 
                                     Arguments[Script.Locals.AntiAimViewer.MouseRemotePositionIndex] = Script.Functions.GetPredictedPosition()
                                     Script.Locals.AntiAimViewer.MouseRemote:FireServer(unpack(Arguments))
-                                end
+								end
                             end
                         end)
                     end
-
 
                     if not Script.Connections.GunConnections["GunAmmoChanged"] then
                         Script.Connections.GunConnections["GunAmmoChanged"] = Script.Functions.Connection(CurrentGun.Ammo:GetPropertyChangedSignal("Value") , function()
@@ -1460,14 +1464,14 @@ function load()
         local __newindex
         local __index
 
-        __index = hookmetamethod(game, "__index", LPH_NO_VIRTUALIZE(function(Self, Index)
+        __index = hookmetamethod(game, "__index", newcclosure(function(Self, Index)
             if not checkcaller() and Settings.AntiAim.CSync.Enabled and Script.Locals.SavedCFrame and Index == "CFrame" and Self == LocalPlayer.Character.HumanoidRootPart then
                 return Script.Locals.SavedCFrame
             end
             return __index(Self, Index)
         end))
 
-        __namecall = hookmetamethod(game, "__namecall", newcclosure(function(Self, ...)
+        __namecall = hookmetamethod(game, "__namecall",  newcclosure(function(Self, ...)
             local Arguments = {...}
 			local Method = tostring(getnamecallmethod())
 
@@ -1478,8 +1482,8 @@ function load()
                         Script.Locals.AntiAimViewer.MouseRemoteFound = true
                         Script.Locals.AntiAimViewer.MouseRemoteArgs = Arguments
                         Script.Locals.AntiAimViewer.MouseRemotePositionIndex = _
-
-                        if Settings.Combat.Enabled and Settings.Combat.Silent and not Settings.Combat.AntiAimViewer and Script.Locals.IsTargetting and Script.Locals.Target then
+						
+						if Settings.Combat.Enabled and Settings.Combat.Silent and Script.Locals.IsTargetting and Script.Locals.Target and not Settings.Combat.AntiAimViewer then
                             Arguments[_] =  Script.Functions.GetPredictedPosition()
                         end
 
@@ -1490,7 +1494,7 @@ function load()
             return __namecall(Self, ...)
         end))
 
-        __newindex = hookmetamethod(game, "__newindex", LPH_NO_VIRTUALIZE(function(Self, Property, Value)
+        __newindex = hookmetamethod(game, "__newindex", newcclosure(function(Self, Property, Value)
 		    local Framework = LocalPlayer.PlayerGui:FindFirstChild("Framework")
             local CallingScript = getcallingscript()
 
